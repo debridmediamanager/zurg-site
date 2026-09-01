@@ -26,10 +26,14 @@ case "${1:-}" in
     : "${ZURGSITE_HOST:?set ZURGSITE_HOST (user@box), in deploy.env or the environment}"
     remote_path="${ZURGSITE_PATH:-~/zurgsite}"
     scp -q public/* "$ZURGSITE_HOST:$remote_path/"
-    [ -n "${ZURGSITE_SERVICE:-}" ] && ssh "$ZURGSITE_HOST" "systemctl --user restart ${ZURGSITE_SERVICE}"
-    # the socket is not rebound the instant systemctl restart returns, so retry
-    [ -n "${ZURGSITE_HEALTH_URL:-}" ] && curl -fsS --retry 5 --retry-delay 1 --retry-all-errors \
-      -o /dev/null -w "${ZURGSITE_HEALTH_URL} -> %{http_code}\n" "$ZURGSITE_HEALTH_URL"
+    if [ -n "${ZURGSITE_SERVICE:-}" ]; then
+      ssh "$ZURGSITE_HOST" "systemctl --user restart ${ZURGSITE_SERVICE}"
+    fi
+    if [ -n "${ZURGSITE_HEALTH_URL:-}" ]; then
+      # the socket is not rebound the instant systemctl restart returns, so retry
+      curl -fsS --retry 5 --retry-delay 1 --retry-all-errors \
+        -o /dev/null -w "${ZURGSITE_HEALTH_URL} -> %{http_code}\n" "$ZURGSITE_HEALTH_URL"
+    fi
     ;;
   pages)
     npx --yes wrangler@latest pages deploy "$PWD/public" \
