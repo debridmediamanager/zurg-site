@@ -497,7 +497,7 @@
           <p class="sec-label">03 / Head to head</p>
           <h2>We put five servers on one box.<br>Then we published the harness.</h2>
         </div>
-        <p class="note">Measured on 2026-08-30 on a small two core server. One news account and one server running at a time so nothing was ever oversubscribed. Every one was built from its own main branch that day. We are not naming them here. The benchmark names all five and hands you the scripts to run it yourself.</p>
+        <p class="note">Measured on 2026-08-30 and again on 2026-09-01 on a small two core server. One news account and one server running at a time so nothing was ever oversubscribed. Every one was built from its own main branch on the day of its run. We are not naming them here. The benchmark names all five and hands you the scripts to run it yourself.</p>
       </div>
 
       <div style="display:flex;flex-direction:column;gap:22px">
@@ -553,11 +553,28 @@
         <p class="note" style="margin:0">The two that do not bring up a mount need a second program running beside them. The Plex rows are the ones with no equivalent anywhere else. zurg reads the library and keeps snapshots of the database so a bad scan is something you can undo.</p>
       </div>
 
+      <div class="glass" style="padding:clamp(26px,2.6vw,32px) clamp(22px,2.6vw,34px);display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <h3>What lands on disk</h3>
+          <p style="font-size:14px;color:var(--dim)">The same five posts went into all five servers. Every file each one published was counted and then read back to be sure it was really there.</p>
+        </div>
+        <div class="tscroll">
+          <table class="t6">
+            <tr><th class="lead">&nbsp;</th><th>zurg</th><th>2nd</th><th>3rd</th><th>4th</th><th>5th</th></tr>
+            <tr><td class="lead">Releases that showed up</td><td class="best">5 of 5</td><td>5 of 5</td><td>5 of 5</td><td>4 of 5</td><td>4 of 5</td></tr>
+            <tr><td class="lead">Files from the posts kept</td><td class="best">21 of 21</td><td>20 of 21</td><td>19 of 21</td><td>13 of 21</td><td>4 of 21</td></tr>
+            <tr><td class="lead">Files given a new name</td><td class="best">none</td><td>none</td><td>1</td><td>3</td><td>4</td></tr>
+            <tr><td class="lead">Everything it listed played</td><td class="best">yes</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td></tr>
+          </table>
+        </div>
+        <p class="note" style="margin:0">Repair files are left out of the count because they are there to fix a bad download and not to watch. One server published five of them next to a video and another published none at all.</p>
+      </div>
+
       <div class="g3">
         <div class="card rec">
           <div class="rec-h"><h3>Only one of them repaired the damage.</h3></div>
           <hr class="rule">
-          <p>One article of 1669 was gone from the news server. Four of the five never got it back. Two served silence forever and one served no bytes at all and one refused the whole file. Reading again eight minutes later changed nothing.</p>
+          <p>One article of 1662 was gone from the news server. Four of the five never got it back. Two served silence forever and one served no bytes at all and one refused the whole file. Reading again eight minutes later changed nothing.</p>
           <p class="win">zurg rebuilt the missing span from the parity files while it was still serving reads.</p>
           <a class="glink" href="https://github.com/debridmediamanager/usenet-streaming-benchmark#damaged-article">The damaged article results &rarr;</a>
         </div>
@@ -584,9 +601,23 @@
         </div>
 
         <div class="card rec">
+          <div class="rec-h"><h3>Only one of them published every post.</h3></div>
+          <hr class="rule">
+          <p>Five posts went in. One server lost a ten episode season and said nothing about it. Another took a release in and reported no error and then published <span class="lose">nothing at all</span> for it.</p>
+          <p class="win">zurg published all five and every file inside them.</p>
+        </div>
+
+        <div class="card rec">
+          <div class="rec-h"><h3>A scrambled post comes out clean.</h3></div>
+          <hr class="rule">
+          <p>Some posts arrive with every filename hashed. Two servers then leave <span class="lose">five repair files</span> sitting beside your video because they only recognise repair data by its file extension.</p>
+          <p class="win">zurg reads what each file really is so you get the video and the artwork and nothing else.</p>
+        </div>
+
+        <div class="card rec">
           <div class="rec-h"><h3>One renamed your files.</h3></div>
           <hr class="rule">
-          <p>The episode arrived under the name of the download rather than its own name. Plex is then left guessing what it is.</p>
+          <p>The video arrived under the name of the download rather than its own name. Plex and Sonarr and Radarr read that name to work out the quality and the group and the episode so all three are left guessing. Three of the five did this and one of them did it to <span class="lose">four of the five posts</span>.</p>
           <p class="win">zurg keeps the original name so Plex matches it first time.</p>
         </div>
 
