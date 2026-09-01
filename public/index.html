@@ -854,7 +854,7 @@
       <div style="display:flex;flex-direction:column;gap:16px">
         <p class="sec-label">07 / Quick start</p>
         <h2 style="font-size:clamp(26px,3.4vw,40px)">Up and running.</h2>
-        <p style="font-size:15.5px;line-height:1.65;color:var(--muted)">Prepare the mount point on your host once. Then start the container. zurg writes its own settings and comes up on port 9999 where you finish setting up in the dashboard.</p>
+        <p style="font-size:15.5px;line-height:1.65;color:var(--muted)">Prepare the mount point on your host once. Then one command. zurg writes its settings into the folder you hand it and your library is mounted on the first run with nothing left to click.</p>
       </div>
       <div class="glass" style="overflow:hidden">
         <div class="panel-bar">
@@ -868,10 +868,13 @@ sudo mount --bind /zurg_mnt /zurg_mnt
 sudo mount --make-rshared /zurg_mnt
 
 <span class="c5"># then start it</span>
-<span class="c1">docker</span> run -d --name zurg \
+<span class="c1">docker</span> run -d --name zurg --restart unless-stopped \
   --cap-add SYS_ADMIN --device /dev/fuse \
   --security-opt apparmor:unconfined \
-  -p <span class="c2">9999</span>:<span class="c2">9999</span> -e TOKEN=<span class="c3">YOUR_RD_API_TOKEN</span> \
+  -p <span class="c2">9999</span>:<span class="c2">9999</span> \
+  -e TOKEN=<span class="c3">YOUR_RD_API_TOKEN</span> \
+  -e MOUNT_PATH=/zurg_mnt/zurg \
+  -v ~/zurg:/config \
   --mount type=bind,source=/zurg_mnt,target=/zurg_mnt,bind-propagation=rshared \
   <span class="c4">ghcr.io/debridmediamanager/zurg:latest</span></pre>
         <div style="border-top:1px solid rgba(255,255,255,.075);padding:18px 24px 20px;display:flex;flex-direction:column;gap:14px">
@@ -887,7 +890,7 @@ sudo mount --make-rshared /zurg_mnt
               <a class="chip" href="https://notes.debridmediamanager.com/setup/windows/">Windows</a>
             </div>
           </div>
-          <p class="note" style="margin:0">Two things worth knowing. The folder stays empty until you switch the mount on in the dashboard and point it at <span class="mono">/zurg_mnt/zurg</span>. And the settings live inside the container so they go away if you ever recreate it. Bind mount a <span class="mono">config.yml</span> to keep them.</p>
+          <p class="note" style="margin:0">Your library lands at <span class="mono">/zurg_mnt/zurg</span> and the dashboard is on 9999. Everything zurg keeps stays in <span class="mono">~/zurg</span> so a new image costs you none of it and a setting changed in the dashboard is written back to the same file you can open in an editor. Only the shared mount on the host needs putting back after a reboot and the Docker guide has the one line unit that does it.</p>
         </div>
       </div>
     </div>
