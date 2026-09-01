@@ -27,8 +27,8 @@ deploy.sh            ships public/ to Cloudflare Pages or an ssh host
 ./deploy.sh host     # scp to a box, restart its unit, health check
 ```
 
-Settings come from the environment. Copy them into a `deploy.env` beside the script
-(gitignored) or export them yourself.
+Settings come from the environment. Copy `deploy.env.example` to `deploy.env` beside
+the script (gitignored) and fill it in, or export the variables yourself.
 
 | Variable | Used by | Default |
 |---|---|---|
