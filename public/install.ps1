@@ -144,7 +144,9 @@ function Install-Zurg([string]$Architecture) {
     $download = Join-Path $TempDir "zurg"
     $extracted = Join-Path $TempDir "zurg-extracted"
     New-Item -ItemType Directory -Force -Path $download | Out-Null
-    & $Gh release download $release.Tag --repo $ZurgRepo --pattern $release.Asset --dir $download --clobber
+    # No --clobber: $download is freshly made each run, and the flag needs a gh
+    # newer than the one Debian and Ubuntu package (2.4.0 has no such flag).
+    & $Gh release download $release.Tag --repo $ZurgRepo --pattern $release.Asset --dir $download
     if ($LASTEXITCODE -ne 0) { throw "The zurg release download failed." }
     Expand-Archive -Path (Join-Path $download $release.Asset) -DestinationPath $extracted -Force
     $downloadedBinary = Join-Path $extracted "zurg.exe"

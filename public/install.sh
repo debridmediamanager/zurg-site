@@ -145,7 +145,9 @@ install_macos_fuse() {
   mount_dir="$TEMP_DIR/macfuse"
   mkdir -p "$mount_dir"
   mkdir -p "$TEMP_DIR/macfuse-download"
-  "$GH_BIN" release download --repo macfuse/macfuse --pattern '*.dmg' --dir "$TEMP_DIR/macfuse-download" --clobber
+  # No --clobber: the directory is freshly made each run, and the flag needs a
+  # gh newer than the one Debian and Ubuntu package (2.4.0 has no such flag).
+  "$GH_BIN" release download --repo macfuse/macfuse --pattern '*.dmg' --dir "$TEMP_DIR/macfuse-download"
   dmg=$(find "$TEMP_DIR/macfuse-download" -maxdepth 1 -type f -name '*.dmg' -print -quit)
   [[ -n "$dmg" ]] || die "Could not download the macFUSE installer."
   hdiutil attach "$dmg" -nobrowse -quiet -mountpoint "$mount_dir"
@@ -208,7 +210,7 @@ install_zurg_binary() {
 
   say "Downloading zurg $ZURG_VERSION for $OS-$ARCH"
   mkdir -p "$TEMP_DIR/zurg"
-  "$GH_BIN" release download "$ZURG_TAG" --repo "$ZURG_REPO" --pattern "$ZURG_ASSET" --dir "$TEMP_DIR/zurg" --clobber
+  "$GH_BIN" release download "$ZURG_TAG" --repo "$ZURG_REPO" --pattern "$ZURG_ASSET" --dir "$TEMP_DIR/zurg"
   unzip -q "$TEMP_DIR/zurg/$ZURG_ASSET" -d "$TEMP_DIR/zurg/extracted"
   [[ -f "$TEMP_DIR/zurg/extracted/zurg" ]] || die "The zurg archive did not contain the expected binary."
   chmod +x "$TEMP_DIR/zurg/extracted/zurg"
