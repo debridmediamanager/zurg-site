@@ -96,19 +96,51 @@ function Get-ZurgRelease([string]$Architecture) {
     $suffix = "-windows-$Architecture.zip"
     $asset = $details.assets | Where-Object { $_.name.EndsWith($suffix) } | Select-Object -First 1
     if (-not $asset) { throw "Release $($release.tag_name) has no windows-$Architecture binary." }
-    return @{ Tag = $release.tag_name; Asset = $asset.name }
+    # The release tag is stamped minutes after the build starts, so it never equals
+    # the version compiled into the binary. The asset name does, so compare on that.
+    $version = $asset.name -replace '^zurg-', '' -replace "-windows-$Architecture\.zip$", ''
+    return @{ Tag = $release.tag_name; Asset = $asset.name; Version = $version }
+}
+
+function Get-InstalledZurgVersion([string]$Binary) {
+    try {
+        $output = & $Binary version 2>&1 | Out-String
+    }
+    catch { return $null }
+    if ($LASTEXITCODE -ne 0) { return $null }
+    $match = [regex]::Match($output, '(?m)^Version:\s*(\S+)')
+    if ($match.Success) { return $match.Groups[1].Value }
+    return $null
 }
 
 function Install-Zurg([string]$Architecture) {
     $binary = Join-Path $InstallDir "zurg.exe"
     New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
+    $release = Get-ZurgRelease $Architecture
+
     if (Test-Path $binary) {
-        Write-Step "Using the existing zurg binary in $InstallDir"
-        return $binary
+        $installed = Get-InstalledZurgVersion $binary
+        if (-not $installed) {
+            Write-Step "Keeping the zurg binary in ${InstallDir}: its version could not be read"
+            return $binary
+        }
+        if ($installed -notlike "*-nightly") {
+            Write-Step "Keeping zurg $installed in ${InstallDir}: not a nightly build"
+            return $binary
+        }
+        if ($installed -eq $release.Version) {
+            Write-Step "zurg $installed is already the newest nightly"
+            return $binary
+        }
+        # nightly versions are YYYY.MM.DD.HHMM stamps, so they order ordinally
+        if ([string]::Compare($installed, $release.Version, [StringComparison]::Ordinal) -gt 0) {
+            Write-Step "Keeping zurg $installed in ${InstallDir}: newer than the published $($release.Version)"
+            return $binary
+        }
+        Write-Step "Updating zurg $installed to $($release.Version)"
     }
 
-    $release = Get-ZurgRelease $Architecture
-    Write-Step "Downloading zurg $($release.Tag) for windows-$Architecture"
+    Write-Step "Downloading zurg $($release.Version) for windows-$Architecture"
     $download = Join-Path $TempDir "zurg"
     $extracted = Join-Path $TempDir "zurg-extracted"
     New-Item -ItemType Directory -Force -Path $download | Out-Null
@@ -119,7 +151,14 @@ function Install-Zurg([string]$Architecture) {
     if (-not (Test-Path $downloadedBinary)) { throw "The zurg archive did not contain zurg.exe." }
     $help = & $downloadedBinary setup --help 2>&1 | Out-String
     if ($help -notmatch '--provider') { throw "The newest nightly predates provider selection. Try again after the next nightly release." }
+    if (Test-Path $binary) {
+        # a running zurg.exe is locked; renaming it aside lets the new one land
+        $retired = "$binary.old"
+        Remove-Item -Path $retired -Force -ErrorAction SilentlyContinue
+        Rename-Item -Path $binary -NewName ([IO.Path]::GetFileName($retired)) -Force
+    }
     Copy-Item -Path $downloadedBinary -Destination $binary
+    Remove-Item -Path "$binary.old" -Force -ErrorAction SilentlyContinue
     return $binary
 }
 

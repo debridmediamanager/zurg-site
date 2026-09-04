@@ -169,17 +169,44 @@ resolve_zurg_release() {
       --jq ".assets[] | select(.name | endswith(\"-$OS-$ARCH.zip\")) | .name" | head -n 1
   )
   [[ -n "$ZURG_ASSET" ]] || die "Release $ZURG_TAG has no $OS-$ARCH binary."
+  # The release tag is stamped minutes after the build starts, so it never equals
+  # the version compiled into the binary. The asset name does, so compare on that.
+  ZURG_VERSION=${ZURG_ASSET#zurg-}
+  ZURG_VERSION=${ZURG_VERSION%-$OS-$ARCH.zip}
+}
+
+installed_zurg_version() {
+  "$1" version 2>/dev/null | sed -n 's/^Version:[[:space:]]*//p' | head -n 1
 }
 
 install_zurg_binary() {
+  local installed
   mkdir -p "$INSTALL_DIR"
+  resolve_zurg_release
+
   if [[ -x "$INSTALL_DIR/zurg" ]]; then
-    say "Using the existing zurg binary in $INSTALL_DIR"
-    return
+    installed=$(installed_zurg_version "$INSTALL_DIR/zurg" || true)
+    if [[ -z "$installed" ]]; then
+      say "Keeping the zurg binary in $INSTALL_DIR: its version could not be read"
+      return
+    fi
+    if [[ "$installed" != *-nightly ]]; then
+      say "Keeping zurg $installed in $INSTALL_DIR: not a nightly build"
+      return
+    fi
+    if [[ "$installed" == "$ZURG_VERSION" ]]; then
+      say "zurg $installed is already the newest nightly"
+      return
+    fi
+    # nightly versions are YYYY.MM.DD.HHMM stamps, so they order lexicographically
+    if [[ "$installed" > "$ZURG_VERSION" ]]; then
+      say "Keeping zurg $installed in $INSTALL_DIR: newer than the published $ZURG_VERSION"
+      return
+    fi
+    say "Updating zurg $installed to $ZURG_VERSION"
   fi
 
-  resolve_zurg_release
-  say "Downloading zurg $ZURG_TAG for $OS-$ARCH"
+  say "Downloading zurg $ZURG_VERSION for $OS-$ARCH"
   mkdir -p "$TEMP_DIR/zurg"
   "$GH_BIN" release download "$ZURG_TAG" --repo "$ZURG_REPO" --pattern "$ZURG_ASSET" --dir "$TEMP_DIR/zurg" --clobber
   unzip -q "$TEMP_DIR/zurg/$ZURG_ASSET" -d "$TEMP_DIR/zurg/extracted"
@@ -188,7 +215,9 @@ install_zurg_binary() {
   if ! "$TEMP_DIR/zurg/extracted/zurg" setup --help 2>&1 | grep -q -- '--provider'; then
     die "The newest nightly predates provider selection. Try again after the next nightly release."
   fi
-  install -m 0755 "$TEMP_DIR/zurg/extracted/zurg" "$INSTALL_DIR/zurg"
+  # replace by rename so an update cannot fail with ETXTBSY while zurg is running
+  install -m 0755 "$TEMP_DIR/zurg/extracted/zurg" "$INSTALL_DIR/zurg.incoming"
+  mv -f "$INSTALL_DIR/zurg.incoming" "$INSTALL_DIR/zurg"
 }
 
 main() {
