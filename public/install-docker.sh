@@ -117,23 +117,43 @@ ensure_github_access() {
   fi
   if ! "$GH_BIN" auth status --hostname github.com >/dev/null 2>&1; then
     say "Sign in to GitHub with the account that has zurg access"
-    "$GH_BIN" auth login --hostname github.com --git-protocol https --web <"$TTY_PATH"
+    "$GH_BIN" auth login --hostname github.com --git-protocol https --web --scopes read:packages <"$TTY_PATH"
   fi
   "$GH_BIN" api "repos/$ZURG_REPO" >/dev/null 2>&1 || die "This GitHub account cannot access $ZURG_REPO."
+}
+
+docker_can_pull_zurg() {
+  "${DOCKER[@]}" pull "ghcr.io/debridmediamanager/zurg:$ZURG_TAG" >/dev/null 2>&1
+}
+
+gh_token_login() {
+  "$GH_BIN" auth token | "${DOCKER[@]}" login ghcr.io --username "$1" --password-stdin >/dev/null 2>&1
 }
 
 login_registry() {
   local login pat
   login=$("$GH_BIN" api user --jq .login)
-  if "$GH_BIN" auth token | "${DOCKER[@]}" login ghcr.io --username "$login" --password-stdin >/dev/null 2>&1; then
+
+  # ghcr.io accepts any valid GitHub token at login, so a successful login proves
+  # nothing on its own. Only a pull shows whether the token carries read:packages,
+  # which the gh web flow does not grant by default.
+  if gh_token_login "$login" && docker_can_pull_zurg; then
     return
   fi
+
+  say "Granting the read:packages scope to your GitHub sign-in"
+  if "$GH_BIN" auth refresh --hostname github.com --scopes read:packages <"$TTY_PATH" \
+    && gh_token_login "$login" && docker_can_pull_zurg; then
+    return
+  fi
+
   printf 'GitHub PAT with read:packages (input hidden): ' >"$TTY_PATH"
   IFS= read -r -s pat <"$TTY_PATH"
   printf '\n' >"$TTY_PATH"
   [[ -n "$pat" ]] || die "A package token is required to pull the sponsor image."
   printf '%s' "$pat" | "${DOCKER[@]}" login ghcr.io --username "$login" --password-stdin
   unset pat
+  docker_can_pull_zurg || die "That token cannot pull ghcr.io/debridmediamanager/zurg:$ZURG_TAG. Confirm your sponsor access and that the token has read:packages."
 }
 
 prepare_mount_propagation() {
