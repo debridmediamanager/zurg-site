@@ -4,6 +4,8 @@ set -euo pipefail
 ZURG_REPO="${ZURG_REPO:-debridmediamanager/zurg}"
 INSTALL_DIR="${ZURG_INSTALL_DIR:-$HOME/zurg}"
 DRY_RUN="${ZURG_INSTALL_DRY_RUN:-0}"
+MODE="${ZURG_INSTALL_MODE:-install}"
+REPLACED=0
 TTY_PATH=/dev/tty
 TEMP_DIR=""
 
@@ -212,6 +214,7 @@ install_zurg_binary() {
     say "Updating zurg $installed to $ZURG_VERSION"
   fi
 
+  REPLACED=1
   say "Downloading zurg $ZURG_VERSION for $OS-$ARCH"
   mkdir -p "$TEMP_DIR/zurg"
   "$GH_BIN" release download "$ZURG_TAG" --repo "$ZURG_REPO" --pattern "$ZURG_ASSET" --dir "$TEMP_DIR/zurg"
@@ -227,17 +230,45 @@ install_zurg_binary() {
 }
 
 main() {
+  [[ $# -gt 0 ]] && MODE=$1
+  case "$MODE" in
+    install|update) ;;
+    *) die "Usage: install.sh [install|update]" ;;
+  esac
+
   detect_platform
-  say "zurg convenience installer"
+  if [[ "$MODE" == update ]]; then
+    say "zurg updater"
+  else
+    say "zurg convenience installer"
+  fi
   printf 'Platform: %s-%s\nInstall:  %s\n' "$OS" "$ARCH" "$INSTALL_DIR"
 
   if [[ "$DRY_RUN" == 1 ]]; then
-    printf 'Dry run: prerequisites, private release download and zurg setup would run.\n'
+    if [[ "$MODE" == update ]]; then
+      printf 'Dry run: the installed binary would be replaced if an older nightly.\n'
+    else
+      printf 'Dry run: prerequisites, private release download and zurg setup would run.\n'
+    fi
     return
   fi
 
   [[ -r "$TTY_PATH" ]] || die "This installer needs an interactive terminal."
   TEMP_DIR=$(mktemp -d "${TMPDIR:-/tmp}/zurg-install.XXXXXX")
+
+  # update only swaps the binary: prerequisites, FUSE and setup already ran when
+  # the install did, and rerunning setup would re-ask questions already answered.
+  if [[ "$MODE" == update ]]; then
+    [[ -x "$INSTALL_DIR/zurg" ]] || die "No zurg binary in $INSTALL_DIR. Run this without 'update' to install first."
+    ensure_github_access
+    install_zurg_binary
+    if [[ "$REPLACED" == 1 ]]; then
+      # Only said when the binary actually changed: a needless restart of a
+      # running zurg is not free, so it must not be advised for a no-op.
+      say "Restart zurg to run the new build"
+    fi
+    return
+  fi
 
   if [[ "$OS" == linux ]]; then
     install_linux_prerequisites

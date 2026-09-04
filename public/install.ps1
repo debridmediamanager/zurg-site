@@ -5,9 +5,13 @@ Set-StrictMode -Version Latest
 $ZurgRepo = if ($env:ZURG_REPO) { $env:ZURG_REPO } else { "debridmediamanager/zurg" }
 $InstallDir = if ($env:ZURG_INSTALL_DIR) { $env:ZURG_INSTALL_DIR } else { Join-Path $HOME "zurg" }
 $DryRun = $env:ZURG_INSTALL_DRY_RUN -eq "1"
+# `irm | iex` passes no arguments, so the piped one-liner selects update through
+# the environment variable and a downloaded copy can take it as an argument.
+$Mode = if ($args.Count -gt 0) { $args[0] } elseif ($env:ZURG_INSTALL_MODE) { $env:ZURG_INSTALL_MODE } else { "install" }
 $TempDir = $null
 $Gh = $null
 $RebootRequired = $false
+$Replaced = $false
 
 function Write-Step([string]$Message) {
     Write-Host "`n==> $Message" -ForegroundColor Cyan
@@ -144,6 +148,7 @@ function Install-Zurg([string]$Architecture) {
         Write-Step "Updating zurg $installed to $($release.Version)"
     }
 
+    $script:Replaced = $true
     Write-Step "Downloading zurg $($release.Version) for windows-$Architecture"
     $download = Join-Path $TempDir "zurg"
     $extracted = Join-Path $TempDir "zurg-extracted"
@@ -170,18 +175,38 @@ function Install-Zurg([string]$Architecture) {
 
 try {
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    if ($Mode -notin @("install", "update")) { throw "Usage: install.ps1 [install|update]" }
     $architecture = Get-PlatformArchitecture
-    Write-Step "zurg Windows convenience installer"
+    if ($Mode -eq "update") { Write-Step "zurg Windows updater" } else { Write-Step "zurg Windows convenience installer" }
     Write-Host "Platform: windows-$architecture"
     Write-Host "Install:  $InstallDir"
 
     if ($DryRun) {
-        Write-Host "Dry run: WinFsp, private release download and zurg setup would run."
+        if ($Mode -eq "update") { Write-Host "Dry run: the installed binary would be replaced if an older nightly." }
+        else { Write-Host "Dry run: WinFsp, private release download and zurg setup would run." }
         return
     }
 
     $TempDir = Join-Path ([IO.Path]::GetTempPath()) ("zurg-install-" + [guid]::NewGuid().ToString("N"))
     New-Item -ItemType Directory -Force -Path $TempDir | Out-Null
+
+    # update only swaps the binary: WinFsp and setup already ran when the install
+    # did, and rerunning setup would re-ask questions already answered.
+    if ($Mode -eq "update") {
+        if (-not (Test-Path (Join-Path $InstallDir "zurg.exe"))) {
+            throw "No zurg.exe in $InstallDir. Run this without 'update' to install first."
+        }
+        $Gh = Get-GitHubCli
+        Connect-GitHub
+        [void](Install-Zurg $architecture)
+        if ($Replaced) {
+            # Only said when the binary actually changed: a needless restart of a
+            # running zurg is not free, so it must not be advised for a no-op.
+            Write-Step "Restart the zurg task to run the new build"
+        }
+        return
+    }
+
     Install-WinFsp
     $Gh = Get-GitHubCli
     Connect-GitHub
