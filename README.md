@@ -11,6 +11,9 @@ what ships, so the whole directory is published as-is.
 ```
 public/
   index.html         the entire page, styles inline
+  install.sh         Linux and macOS binary convenience installer
+  install-docker.sh  Linux Docker convenience installer
+  install.ps1        Windows binary convenience installer
   logo.png           wordmark
   favicon.png        tab icon
   social-card.png    Open Graph / Twitter card

@@ -858,17 +858,17 @@
       </div>
       <div class="glass" style="overflow:hidden">
         <div class="panel-bar">
-          <span class="mono" style="font-size:11.5px;color:var(--faint);letter-spacing:.1em">NIGHTLY BINARY</span>
-          <span class="mono" style="font-size:11.5px;color:var(--faint);margin-left:auto">Linux · macOS · Windows</span>
+          <span class="mono" style="font-size:11.5px;color:var(--faint);letter-spacing:.1em">CONVENIENCE INSTALL</span>
+          <span class="mono" style="font-size:11.5px;color:var(--faint);margin-left:auto">Linux · macOS · Windows · Docker</span>
         </div>
 <pre><span class="c5"># Linux and macOS</span>
-<span class="c1">chmod</span> +x zurg
-./zurg <span class="c4">setup</span>
-./zurg <span class="c4">doctor</span>
+<span class="c1">curl</span> -fsSL https://zurg.debridmediamanager.com/install.sh | bash
 
 <span class="c5"># Windows PowerShell</span>
-.\zurg.exe <span class="c4">setup</span>
-.\zurg.exe <span class="c4">doctor</span></pre>
+<span class="c1">irm</span> https://zurg.debridmediamanager.com/install.ps1 | iex
+
+<span class="c5"># Docker on Linux</span>
+<span class="c1">curl</span> -fsSL https://zurg.debridmediamanager.com/install-docker.sh | bash</pre>
         <div style="border-top:1px solid rgba(255,255,255,.075);padding:18px 24px 20px;display:flex;flex-direction:column;gap:14px">
           <div>
             <p class="sec-label" style="margin:0 0 10px">Start where you are</p>
@@ -883,7 +883,7 @@
               <a class="chip" href="https://notes.debridmediamanager.com/setup/windows/">Windows</a>
             </div>
           </div>
-          <p class="note" style="margin:0">Your config stays next to the binary and is locked to your account. The installer puts rclone and ffprobe in <span class="mono">bin</span> then registers systemd on Linux or launchd on macOS or an interactive task on Windows. Run <span class="mono">zurg service status</span> whenever you want to check it. Docker stays available in its own guide.</p>
+          <p class="note" style="margin:0">The convenience script checks the host then signs you in to GitHub and downloads the right build. It hands off to the same setup command and provider chooser. The manual guides stay available.</p>
         </div>
       </div>
     </div>
