@@ -2,6 +2,7 @@
 set -euo pipefail
 
 ZURG_REPO="${ZURG_REPO:-debridmediamanager/zurg}"
+ZURG_TAG="${ZURG_TAG:-latest}"
 INSTALL_DIR="${ZURG_INSTALL_DIR:-$HOME/zurg}"
 MOUNT_PARENT=/zurg_mnt
 DRY_RUN="${ZURG_INSTALL_DRY_RUN:-0}"
@@ -135,11 +136,6 @@ login_registry() {
   unset pat
 }
 
-latest_nightly_tag() {
-  "$GH_BIN" api "repos/$ZURG_REPO/releases?per_page=30" \
-    --jq '[.[] | select(.prerelease == true and .draft == false)][0].tag_name'
-}
-
 prepare_mount_propagation() {
   say "Preparing persistent FUSE mount propagation"
   if [[ ! -c /dev/fuse ]] && command -v modprobe >/dev/null 2>&1; then
@@ -197,10 +193,18 @@ services:
       - /zurg_mnt:/zurg_mnt:rshared
 YAML
   fi
+  local pinned
   if [[ ! -f .env ]] || ! grep -q '^ZURG_TAG=' .env; then
     printf 'ZURG_TAG=%s\n' "$ZURG_TAG" >>.env
   else
-    ZURG_TAG=$(sed -n 's/^ZURG_TAG=//p' .env | tail -n 1)
+    pinned=$(sed -n 's/^ZURG_TAG=//p' .env | tail -n 1)
+    if [[ "$pinned" == *-nightly ]]; then
+      say "Repointing $pinned at :$ZURG_TAG so this install tracks the newest nightly"
+      awk -v tag="$ZURG_TAG" '/^ZURG_TAG=/ { print "ZURG_TAG=" tag; next } { print }' .env >.env.zurg-tmp
+      mv .env.zurg-tmp .env
+    else
+      ZURG_TAG=$pinned
+    fi
   fi
   "${DOCKER[@]}" compose config --services | grep -qx zurg || die "The existing Compose project has no service named zurg."
 }
@@ -221,10 +225,8 @@ main() {
   select_docker_command
   ensure_github_access
   login_registry
-  ZURG_TAG=$(latest_nightly_tag)
-  [[ -n "$ZURG_TAG" && "$ZURG_TAG" != null ]] || die "No sponsor nightly image was found."
 
-  say "Checking zurg $ZURG_TAG"
+  say "Checking zurg :$ZURG_TAG"
   "${DOCKER[@]}" pull "ghcr.io/debridmediamanager/zurg:$ZURG_TAG" >/dev/null
   if ! "${DOCKER[@]}" run --rm "ghcr.io/debridmediamanager/zurg:$ZURG_TAG" setup --help 2>&1 | grep -q -- '--provider'; then
     die "The newest image predates provider selection. Try again after the next nightly release."
@@ -233,7 +235,7 @@ main() {
   prepare_mount_propagation
   write_compose_project
 
-  say "Pulling zurg $ZURG_TAG"
+  say "Pulling zurg :$ZURG_TAG"
   "${DOCKER[@]}" compose pull zurg
   if ! "${DOCKER[@]}" compose run --rm zurg setup --help 2>&1 | grep -q -- '--provider'; then
     die "The Compose service uses a zurg image that predates provider selection. Update its image and rerun."
