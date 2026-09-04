@@ -94,7 +94,11 @@ function Get-ZurgRelease([string]$Architecture) {
     if (-not $release) { throw "No sponsor nightly release was found." }
     $details = & $Gh api "repos/$ZurgRepo/releases/tags/$($release.tag_name)" | ConvertFrom-Json
     $suffix = "-windows-$Architecture.zip"
-    $asset = $details.assets | Where-Object { $_.name.EndsWith($suffix) } | Select-Object -First 1
+    # Some releases also publish a variant build ending with the same platform
+    # suffix, e.g. zurg-<version>-vmlimit-linux-amd64.zip. Only the plain build
+    # has no extra token before the platform, so it is the shortest name.
+    $asset = $details.assets | Where-Object { $_.name.EndsWith($suffix) } |
+        Sort-Object { $_.name.Length } | Select-Object -First 1
     if (-not $asset) { throw "Release $($release.tag_name) has no windows-$Architecture binary." }
     # The release tag is stamped minutes after the build starts, so it never equals
     # the version compiled into the binary. The asset name does, so compare on that.

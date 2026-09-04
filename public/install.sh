@@ -166,9 +166,13 @@ resolve_zurg_release() {
       --jq '[.[] | select(.prerelease == true and .draft == false)][0].tag_name'
   )
   [[ -n "$ZURG_TAG" && "$ZURG_TAG" != null ]] || die "No sponsor nightly release was found."
+  # Some releases also publish a variant build whose name ends with the same
+  # platform suffix, e.g. zurg-<version>-vmlimit-linux-amd64.zip. Taking the
+  # first match would install that instead of the plain build, so take the
+  # shortest name: only the plain one has no extra token before the platform.
   ZURG_ASSET=$(
     "$GH_BIN" api "repos/$ZURG_REPO/releases/tags/$ZURG_TAG" \
-      --jq ".assets[] | select(.name | endswith(\"-$OS-$ARCH.zip\")) | .name" | head -n 1
+      --jq "[.assets[].name | select(endswith(\"-$OS-$ARCH.zip\"))] | sort_by(length) | .[0] // empty"
   )
   [[ -n "$ZURG_ASSET" ]] || die "Release $ZURG_TAG has no $OS-$ARCH binary."
   # The release tag is stamped minutes after the build starts, so it never equals
