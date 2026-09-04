@@ -767,7 +767,7 @@
         <div class="card rec" style="border-color:rgba(225,84,122,.28);background:linear-gradient(rgba(225,84,122,.06),rgba(225,84,122,.06)),rgba(26,31,46,.55)">
           <div class="rec-h"><h3 style="color:#fff">Maybe not for you.</h3></div>
           <hr class="rule">
-          <p style="color:var(--soft)">If you want one binary and nothing around it then stay where you are. A working setup is zurg and rclone and a media server. Infuse is the one exception because it reads the WebDAV straight off and skips rclone.</p>
+          <p style="color:var(--soft)">zurg now builds the rest of its own install. It fetches rclone and ffprobe then creates the mount and auto-start. You still need a media server unless Infuse reads the WebDAV directly.</p>
         </div>
       </div>
     </div>
@@ -816,7 +816,7 @@
             <div class="fitem"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#17bf63" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg><span style="color:var(--soft)">As many accounts as you like merged into one library</span></div>
             <div class="fitem"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#17bf63" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg><span style="color:var(--soft)">Works as a download client for Sonarr and Radarr</span></div>
             <div class="fitem"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#17bf63" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg><span style="color:var(--soft)">Move and rename files instantly however big they are</span></div>
-            <div class="fitem"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#17bf63" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg><span style="color:var(--soft)">The full source code and the private docker image</span></div>
+            <div class="fitem"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#17bf63" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg><span style="color:var(--soft)">Nightly binaries and the full source code plus the private Docker image</span></div>
             <div class="fitem"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#17bf63" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg><span style="color:var(--soft)">Sponsors only features on Debrid Media Manager. We are announcing those soon</span></div>
           </div>
           <p class="note" style="color:var(--soft);font-size:13.5px">The same $4 covers the nightly builds of zurg and the full zurg source code and the sponsors only features on Debrid Media Manager.</p>
@@ -854,29 +854,21 @@
       <div style="display:flex;flex-direction:column;gap:16px">
         <p class="sec-label">07 / Quick start</p>
         <h2 style="font-size:clamp(26px,3.4vw,40px)">Up and running.</h2>
-        <p style="font-size:15.5px;line-height:1.65;color:var(--muted)">Prepare the mount point on your host once. Then one command. zurg writes its settings into the folder you hand it and your library is mounted on the first run with nothing left to click.</p>
+        <p style="font-size:15.5px;line-height:1.65;color:var(--muted)">Put the binary in one folder. Run setup. zurg asks for your token and writes the config. It fetches the right helpers for your machine then creates the mount and auto-start.</p>
       </div>
       <div class="glass" style="overflow:hidden">
         <div class="panel-bar">
-          <span class="mono" style="font-size:11.5px;color:var(--faint);letter-spacing:.1em">DOCKER</span>
-          <span class="mono" style="font-size:11.5px;color:var(--faint);margin-left:auto">sponsors image</span>
+          <span class="mono" style="font-size:11.5px;color:var(--faint);letter-spacing:.1em">NIGHTLY BINARY</span>
+          <span class="mono" style="font-size:11.5px;color:var(--faint);margin-left:auto">Linux · macOS · Windows</span>
         </div>
-<pre><span class="c5"># one time on the host</span>
-sudo mkdir -p /zurg_mnt
-sudo modprobe fuse
-sudo mount --bind /zurg_mnt /zurg_mnt
-sudo mount --make-rshared /zurg_mnt
+<pre><span class="c5"># Linux and macOS</span>
+<span class="c1">chmod</span> +x zurg
+./zurg <span class="c4">setup</span>
+./zurg <span class="c4">doctor</span>
 
-<span class="c5"># then start it</span>
-<span class="c1">docker</span> run -d --name zurg --restart unless-stopped \
-  --cap-add SYS_ADMIN --device /dev/fuse \
-  --security-opt apparmor:unconfined \
-  -p <span class="c2">9999</span>:<span class="c2">9999</span> \
-  -e TOKEN=<span class="c3">YOUR_RD_API_TOKEN</span> \
-  -e MOUNT_PATH=/zurg_mnt/zurg \
-  -v ~/zurg:/config \
-  --mount type=bind,source=/zurg_mnt,target=/zurg_mnt,bind-propagation=rshared \
-  <span class="c4">ghcr.io/debridmediamanager/zurg:latest</span></pre>
+<span class="c5"># Windows PowerShell</span>
+.\zurg.exe <span class="c4">setup</span>
+.\zurg.exe <span class="c4">doctor</span></pre>
         <div style="border-top:1px solid rgba(255,255,255,.075);padding:18px 24px 20px;display:flex;flex-direction:column;gap:14px">
           <div>
             <p class="sec-label" style="margin:0 0 10px">Start where you are</p>
@@ -885,12 +877,13 @@ sudo mount --make-rshared /zurg_mnt
               <a class="chip" href="https://notes.debridmediamanager.com/guides/jellyfin/">Jellyfin</a>
               <a class="chip" href="https://notes.debridmediamanager.com/guides/sonarr-radarr/">Sonarr and Radarr</a>
               <a class="chip" href="https://notes.debridmediamanager.com/guides/usenet/">Usenet</a>
+              <a class="chip" href="https://notes.debridmediamanager.com/setup/linux/">Linux</a>
               <a class="chip" href="https://notes.debridmediamanager.com/setup/docker/">Docker</a>
               <a class="chip" href="https://notes.debridmediamanager.com/setup/macos/">macOS</a>
               <a class="chip" href="https://notes.debridmediamanager.com/setup/windows/">Windows</a>
             </div>
           </div>
-          <p class="note" style="margin:0">Your library lands at <span class="mono">/zurg_mnt/zurg</span> and the dashboard is on 9999. Everything zurg keeps stays in <span class="mono">~/zurg</span> so a new image costs you none of it and a setting changed in the dashboard is written back to the same file you can open in an editor. Only the shared mount on the host needs putting back after a reboot and the Docker guide has the one line unit that does it.</p>
+          <p class="note" style="margin:0">Your config stays next to the binary and is locked to your account. The installer puts rclone and ffprobe in <span class="mono">bin</span> then registers systemd on Linux or launchd on macOS or an interactive task on Windows. Run <span class="mono">zurg service status</span> whenever you want to check it. Docker stays available in its own guide.</p>
         </div>
       </div>
     </div>
