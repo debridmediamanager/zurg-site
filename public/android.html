@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>zurg on Android and Google TV</title>
+<meta name="description" content="Run your library on your Android phone or Google TV. Set up providers. Open your players. Share over your local network.">
+<meta name="color-scheme" content="dark">
+<meta property="og:title" content="zurg on Android and Google TV">
+<meta property="og:description" content="Your library runs on your phone or your TV. An installation guide for the zurg Android app.">
+<meta property="og:type" content="article">
+<link rel="canonical" href="https://zurg.debridmediamanager.com/android.html">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root{color-scheme:dark;--bg:#0f1419;--surface:#1a1f2e;--text:#e1e8ed;--muted:#a9b6c2;--accent:#1da1f2}
+  *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:18px/1.65 'Bricolage Grotesque',sans-serif}
+  main,header,footer{max-width:900px;margin:auto;padding:24px}header{display:flex;justify-content:space-between;align-items:center;gap:20px}
+  a{color:var(--accent);text-underline-offset:4px}a:focus-visible{outline:3px solid var(--accent);outline-offset:5px}
+  .brand{font-size:32px;font-weight:800;text-decoration:none;color:var(--text)}.eyebrow{font:12px 'JetBrains Mono',monospace;letter-spacing:.15em;color:var(--accent);text-transform:uppercase}
+  h1{font-size:clamp(40px,8vw,72px);line-height:1.03;letter-spacing:-.04em;margin:20px 0}h2{font-size:30px;line-height:1.2;letter-spacing:-.02em;margin:0 0 16px}
+  p{margin:12px 0}.intro{font-size:23px;color:var(--muted);max-width:650px}.button{display:inline-block;background:var(--accent);color:#06111c;font-weight:700;padding:14px 22px;border-radius:12px;text-decoration:none;margin:16px 0}
+  section{margin-top:36px;padding:28px;border:1px solid #2f3644;border-radius:18px;background:var(--surface)}li{padding:6px 0}ol,ul{padding-left:24px}
+  table{width:100%;border-collapse:collapse;font-size:16px}th,td{text-align:left;padding:12px 8px;border-bottom:1px solid #2f3644}code{font:14px 'JetBrains Mono',monospace;overflow-wrap:anywhere;color:#bce0f6}
+  .note{color:var(--muted);font-size:16px}footer{color:var(--muted);font-size:15px;padding-top:40px;padding-bottom:56px}
+  @media(max-width:520px){section{padding:20px}header{font-size:15px}th,td{padding:10px 4px}}
+</style>
+</head>
+<body>
+<header><a class="brand" href="/">zurg.</a><a href="https://github.com/debridmediamanager/zurg/releases">Sponsor releases</a></header>
+<main>
+<p class="eyebrow">Android · Google TV · Fire TV</p>
+<h1>Your library.<br>On your device.</h1>
+<p class="intro">Run zurg on your phone or TV. Browse your providers. Open your favorite player. Share your library across your home.</p>
+<a class="button" href="https://github.com/debridmediamanager/zurg/releases">Download the Android app</a>
+<p class="note">Nightly APKs are available to sponsors. Sign in to the GitHub account connected to your access.</p>
+
+<section aria-labelledby="install"><h2 id="install">Choose your APK</h2>
+<p>The same app includes both the phone and TV interfaces. Android 8.0 or newer is required.</p>
+<table><thead><tr><th>Download suffix</th><th>Device</th></tr></thead><tbody>
+<tr><td><code>android-arm64-v8a.apk</code></td><td>Most modern phones and TV boxes</td></tr>
+<tr><td><code>android-armeabi-v7a.apk</code></td><td>Older 32-bit phones and TV sticks</td></tr>
+<tr><td><code>android-x86_64.apk</code></td><td>Compatible Chromebooks and emulators</td></tr>
+</tbody></table>
+<p>Open the downloaded APK and allow installation from that source. Android or Play Protect may ask you to confirm sideloading.</p>
+<p class="note">Usenet needs a 64-bit device. Install updates over the existing app. Uninstalling removes its private configuration.</p></section>
+
+<section aria-labelledby="setup"><h2 id="setup">Make it yours</h2>
+<ol><li>Open zurg. Sign in to GitHub for updates or continue and sign in later.</li>
+<li>Add your provider accounts and test the credentials. Account names let you add more than one account at a provider.</li>
+<li>Choose the profile for your phone or TV. Smaller profiles use smaller disk caches and a lower memory target.</li>
+<li>Allow notifications and background operation. Choose whether zurg starts after reboot.</li>
+<li>Start your library. Wait for Ready before opening a player. Large accounts take longer on their first load.</li></ol>
+<p class="note">Usenet connection limits apply across every app and device using the account.</p></section>
+
+<section aria-labelledby="watch"><h2 id="watch">Press play</h2>
+<p>Open Library and choose a file. More lets you choose another player or open the file through Android documents. The zurg root also appears in compatible Files apps and document pickers.</p>
+<p>Open your player once and finish its setup before choosing it from Files.</p>
+<p>For a WebDAV player on the same device add <code>http://127.0.0.1:9999/dav/</code> as a network source. Status shows the current address if you change the port.</p>
+<p>On TV use the D-pad and Select. Select a text field to edit it and press Back to return to navigation. Back returns to the previous folder. Menu or More opens release actions. Fire TV can use WebDAV even when no Files app is installed.</p>
+<p class="note">Repair and delete act on the entire release in its owning provider account. Delete asks for confirmation.</p></section>
+
+<section aria-labelledby="lan"><h2 id="lan">Watch elsewhere at home</h2>
+<p>In Settings turn on Expose on local network. zurg creates credentials and shows your device’s WebDAV address. Add that address and those credentials to the player on your other device.</p>
+<p>Keep the Android host running and connected. Use a trusted network because HTTP does not encrypt playback or WebDAV credentials. Local sharing is off by default.</p></section>
+
+<section aria-labelledby="care"><h2 id="care">Keep your library available</h2>
+<p>The notification shows the server state and has a Stop action. A Quick Settings tile can also start or stop zurg.</p>
+<p>Allow background operation during setup. Some phone manufacturers need extra battery settings. See the <a href="https://dontkillmyapp.com/">device background guide</a> if playback stops with the screen off.</p>
+<p>Settings includes a YAML editor and a local Web dashboard for advanced features. Logs can be filtered and shared. Backups contain credentials and should be stored privately. Stop the server before restoring.</p>
+<p>Updates checks the sponsor repository and downloads an APK for your device. It checks the app identity and signing key before opening the Android installer. The APK updates the app and its bundled engine together.</p></section>
+</main>
+<footer><a href="/">Back to zurg</a><p>Your providers. Your players. Your library.</p></footer>
+</body>
+</html>
