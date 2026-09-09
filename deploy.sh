@@ -25,7 +25,8 @@ case "${1:-}" in
   host)
     : "${ZURGSITE_HOST:?set ZURGSITE_HOST (user@box), in deploy.env or the environment}"
     remote_path="${ZURGSITE_PATH:-~/zurgsite}"
-    scp -q public/* "$ZURGSITE_HOST:$remote_path/"
+    # -r so subdirectories under public/ ship too, not just the top-level files.
+    scp -qr public/. "$ZURGSITE_HOST:$remote_path/"
     if [ -n "${ZURGSITE_SERVICE:-}" ]; then
       ssh "$ZURGSITE_HOST" "systemctl --user restart ${ZURGSITE_SERVICE}"
     fi
