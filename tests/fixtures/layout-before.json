@@ -1,0 +1,325 @@
+{
+  "captured": "2026-09-09",
+  "source": "DOM measurements from the public site before the responsive changes. Table descendants inside horizontal scroll regions are expected to exceed the viewport. The regression runs the real page at these same widths.",
+  "cases": [
+    {
+      "route": "/",
+      "width": 320,
+      "visibleNavigationLinks": 0,
+      "paragraphsBelow14px": 27,
+      "overflow": [
+        {
+          "tag": "A",
+          "cls": "btn btn-primary btn-sm cta",
+          "text": "Sponsor",
+          "width": 96.8203125
+        },
+        {
+          "tag": "TABLE",
+          "cls": "t6",
+          "text": "\u00a0\tZURG\t2ND\t3RD\t4TH\t5TH\nAverage MB/s\t48.42\t36.",
+          "width": 676.421875
+        },
+        {
+          "tag": "TBODY",
+          "cls": "",
+          "text": "\u00a0\tZURG\t2ND\t3RD\t4TH\t5TH\nAverage MB/s\t48.42\t36.",
+          "width": 676.421875
+        },
+        {
+          "tag": "TR",
+          "cls": "",
+          "text": "\u00a0\tZURG\t2ND\t3RD\t4TH\t5TH",
+          "width": 676.421875
+        },
+        {
+          "tag": "TH",
+          "cls": "",
+          "text": "ZURG",
+          "width": 96.203125
+        },
+        {
+          "tag": "TH",
+          "cls": "",
+          "text": "2ND",
+          "width": 96.203125
+        },
+        {
+          "tag": "TH",
+          "cls": "",
+          "text": "3RD",
+          "width": 96.203125
+        },
+        {
+          "tag": "TH",
+          "cls": "",
+          "text": "4TH",
+          "width": 96.203125
+        },
+        {
+          "tag": "TH",
+          "cls": "",
+          "text": "5TH",
+          "width": 88.40625
+        },
+        {
+          "tag": "TR",
+          "cls": "",
+          "text": "Average MB/s\t48.42\t36.65\t25.58\t18.51\t12.94",
+          "width": 676.421875
+        },
+        {
+          "tag": "TD",
+          "cls": "best",
+          "text": "48.42",
+          "width": 96.203125
+        },
+        {
+          "tag": "TD",
+          "cls": "",
+          "text": "36.65",
+          "width": 96.203125
+        }
+      ]
+    },
+    {
+      "route": "/",
+      "width": 375,
+      "visibleNavigationLinks": 0,
+      "paragraphsBelow14px": 27,
+      "overflow": [
+        {
+          "tag": "A",
+          "cls": "btn btn-primary btn-sm cta",
+          "text": "Sponsor",
+          "width": 96.8203125
+        },
+        {
+          "tag": "TABLE",
+          "cls": "t6",
+          "text": "\u00a0\tZURG\t2ND\t3RD\t4TH\t5TH\nAverage MB/s\t48.42\t36.",
+          "width": 676.421875
+        },
+        {
+          "tag": "TBODY",
+          "cls": "",
+          "text": "\u00a0\tZURG\t2ND\t3RD\t4TH\t5TH\nAverage MB/s\t48.42\t36.",
+          "width": 676.421875
+        },
+        {
+          "tag": "TR",
+          "cls": "",
+          "text": "\u00a0\tZURG\t2ND\t3RD\t4TH\t5TH",
+          "width": 676.421875
+        },
+        {
+          "tag": "TH",
+          "cls": "",
+          "text": "2ND",
+          "width": 96.203125
+        },
+        {
+          "tag": "TH",
+          "cls": "",
+          "text": "3RD",
+          "width": 96.203125
+        },
+        {
+          "tag": "TH",
+          "cls": "",
+          "text": "4TH",
+          "width": 96.203125
+        },
+        {
+          "tag": "TH",
+          "cls": "",
+          "text": "5TH",
+          "width": 88.40625
+        },
+        {
+          "tag": "TR",
+          "cls": "",
+          "text": "Average MB/s\t48.42\t36.65\t25.58\t18.51\t12.94",
+          "width": 676.421875
+        },
+        {
+          "tag": "TD",
+          "cls": "",
+          "text": "36.65",
+          "width": 96.203125
+        },
+        {
+          "tag": "TD",
+          "cls": "",
+          "text": "25.58",
+          "width": 96.203125
+        },
+        {
+          "tag": "TD",
+          "cls": "",
+          "text": "18.51",
+          "width": 96.203125
+        }
+      ]
+    },
+    {
+      "route": "/",
+      "width": 768,
+      "visibleNavigationLinks": 0,
+      "paragraphsBelow14px": 27,
+      "overflow": []
+    },
+    {
+      "route": "/",
+      "width": 900,
+      "visibleNavigationLinks": 8,
+      "paragraphsBelow14px": 27,
+      "overflow": [
+        {
+          "tag": "NAV",
+          "cls": "nav-links",
+          "text": "Docs\nAndroid\nSpeed\nUsenet\nBuilds\nJellyfin\nQui",
+          "width": 535.0234375
+        },
+        {
+          "tag": "A",
+          "cls": "",
+          "text": "GitHub",
+          "width": 46.6015625
+        },
+        {
+          "tag": "A",
+          "cls": "btn btn-primary btn-sm cta",
+          "text": "Sponsor",
+          "width": 96.8203125
+        }
+      ]
+    },
+    {
+      "route": "/",
+      "width": 1024,
+      "visibleNavigationLinks": 8,
+      "paragraphsBelow14px": 27,
+      "overflow": [
+        {
+          "tag": "A",
+          "cls": "btn btn-primary btn-sm cta",
+          "text": "Sponsor",
+          "width": 96.8203125
+        }
+      ]
+    },
+    {
+      "route": "/",
+      "width": 1440,
+      "visibleNavigationLinks": 8,
+      "paragraphsBelow14px": 27,
+      "overflow": []
+    },
+    {
+      "route": "/",
+      "width": 2560,
+      "visibleNavigationLinks": 8,
+      "paragraphsBelow14px": 27,
+      "overflow": []
+    },
+    {
+      "route": "/android.html",
+      "width": 320,
+      "visibleNavigationLinks": 0,
+      "paragraphsBelow14px": 1,
+      "overflow": []
+    },
+    {
+      "route": "/android.html",
+      "width": 375,
+      "visibleNavigationLinks": 0,
+      "paragraphsBelow14px": 1,
+      "overflow": []
+    },
+    {
+      "route": "/android.html",
+      "width": 768,
+      "visibleNavigationLinks": 0,
+      "paragraphsBelow14px": 1,
+      "overflow": []
+    },
+    {
+      "route": "/android.html",
+      "width": 900,
+      "visibleNavigationLinks": 0,
+      "paragraphsBelow14px": 1,
+      "overflow": []
+    },
+    {
+      "route": "/android.html",
+      "width": 1024,
+      "visibleNavigationLinks": 0,
+      "paragraphsBelow14px": 1,
+      "overflow": []
+    },
+    {
+      "route": "/android.html",
+      "width": 1440,
+      "visibleNavigationLinks": 0,
+      "paragraphsBelow14px": 1,
+      "overflow": []
+    },
+    {
+      "route": "/android.html",
+      "width": 2560,
+      "visibleNavigationLinks": 0,
+      "paragraphsBelow14px": 1,
+      "overflow": []
+    },
+    {
+      "route": "/jellyfin/",
+      "width": 320,
+      "visibleNavigationLinks": 0,
+      "paragraphsBelow14px": 11,
+      "overflow": []
+    },
+    {
+      "route": "/jellyfin/",
+      "width": 375,
+      "visibleNavigationLinks": 0,
+      "paragraphsBelow14px": 11,
+      "overflow": []
+    },
+    {
+      "route": "/jellyfin/",
+      "width": 768,
+      "visibleNavigationLinks": 0,
+      "paragraphsBelow14px": 11,
+      "overflow": []
+    },
+    {
+      "route": "/jellyfin/",
+      "width": 900,
+      "visibleNavigationLinks": 5,
+      "paragraphsBelow14px": 11,
+      "overflow": []
+    },
+    {
+      "route": "/jellyfin/",
+      "width": 1024,
+      "visibleNavigationLinks": 5,
+      "paragraphsBelow14px": 13,
+      "overflow": []
+    },
+    {
+      "route": "/jellyfin/",
+      "width": 1440,
+      "visibleNavigationLinks": 5,
+      "paragraphsBelow14px": 13,
+      "overflow": []
+    },
+    {
+      "route": "/jellyfin/",
+      "width": 2560,
+      "visibleNavigationLinks": 5,
+      "paragraphsBelow14px": 13,
+      "overflow": []
+    }
+  ]
+}

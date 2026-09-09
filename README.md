@@ -3,14 +3,17 @@
 Source for **[zurg.debridmediamanager.com](https://zurg.debridmediamanager.com/)**, the
 landing page for [zurg](https://github.com/debridmediamanager/zurg-public).
 
-One hand-written `index.html`. No framework and no build step. `public/` holds exactly
-what ships, so the whole directory is published as-is.
+Three hand-written pages share `public/site.css`. No framework and no build step.
+`public/` holds exactly what ships, so the whole directory is published as-is.
 
 ## Layout
 
 ```
 public/
-  index.html         the entire page, styles inline
+  index.html         the main landing page
+  android.html       Android and TV setup guide
+  jellyfin/          Jellyfin plugin guide and images
+  site.css           shared typography and responsive layouts
   install.sh         Linux and macOS binary convenience installer
   install-docker.sh  Linux Docker convenience installer
   install.ps1        Windows binary convenience installer
@@ -21,7 +24,25 @@ public/
   robots.txt
   sitemap.xml
 deploy.sh            ships public/ to Cloudflare Pages or an ssh host
+tests/               browser measurements and captured baseline fixtures
 ```
+
+## Browser verification
+
+Serve `public/` from an isolated directory and port on zen. Attach to an existing
+Chrome CDP profile using the workspace browser-driver rules. The test opens and
+closes its own tab and disables the browser cache.
+
+```bash
+uv run --with websocket-client python tests/dom-layout.py \
+  --base-url http://zen:8319 --cdp http://127.0.0.1:9226 --sweep
+```
+
+The test replays widths captured from the original public pages and measures
+overflow, navigation visibility, supporting text sizes, control heights, image
+loading, and keyboard access to scrollable tables. `--sweep` also checks every
+40 pixels from 320 through 2560 and a landscape viewport. `--report` saves all
+DOM measurements and `--screenshots` saves selected viewport images.
 
 ## Deploying
 

@@ -35,280 +35,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<style>
-  :root {
-    --bg: #0f1419;
-    --surface: #1a1f2e;
-    --border: #2f3644;
-    --text: #e1e8ed;
-    --soft: #c3ced8;
-    --muted: #a9b6c2;
-    --dim: #8899a6;
-    --faint: #5c6f7d;
-    --accent: #1da1f2;
-    --violet: #794bc4;
-    --green: #17bf63;
-    --amber: #ffad1f;
-    --rose: #e1547a;
-    --sans: 'Bricolage Grotesque', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
-    --pad: 24px;
-  }
-  @media (min-width: 760px) { :root { --pad: 40px; } }
-
-  * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; overflow-x: clip; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    font-size: 16px;
-    line-height: 1.55;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
-    text-wrap: pretty;
-  }
-  img { max-width: 100%; }
-  a { color: var(--accent); text-decoration: none; transition: color .18s; }
-  a:hover { color: #6cc4f7; }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
-
-  /* atmosphere */
-  .atmos { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-  .mesh {
-    position: absolute; inset: 0;
-    background-image:
-      radial-gradient(900px 620px at 78% 2%, rgba(29,161,242,.26) 0%, transparent 62%),
-      radial-gradient(760px 560px at 10% 14%, rgba(121,75,196,.24) 0%, transparent 60%),
-      radial-gradient(1200px 700px at 50% 60%, rgba(121,75,196,.09) 0%, transparent 66%);
-  }
-  .grid-o {
-    position: absolute; inset: 0; opacity: .45;
-    background-image:
-      linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.022) 1px, transparent 1px);
-    background-size: 56px 56px;
-    -webkit-mask-image: radial-gradient(1100px 900px at 50% 8%, #000 0%, transparent 78%);
-    mask-image: radial-gradient(1100px 900px at 50% 8%, #000 0%, transparent 78%);
-  }
-  .vig {
-    position: absolute; inset: 0;
-    background: radial-gradient(1500px 1100px at 50% 26%, transparent 40%, rgba(0,0,0,.55) 100%);
-  }
-  main, header, footer { position: relative; z-index: 1; }
-  section { position: relative; }
-  #access::before {
-    content: ""; position: absolute; inset: -6% 0 10% 0; pointer-events: none; z-index: -1;
-    background: radial-gradient(closest-side, rgba(29,161,242,.16) 0%, transparent 100%);
-  }
-  #migrating::before {
-    content: ""; position: absolute; inset: 0 0 30% 0; pointer-events: none; z-index: -1;
-    background: radial-gradient(closest-side, rgba(121,75,196,.14) 0%, transparent 100%);
-  }
-
-  .wrap { width: 100%; max-width: 1200px; margin: 0 auto; padding-left: var(--pad); padding-right: var(--pad); }
-
-  /* type */
-  h1, h2, h3 { margin: 0; letter-spacing: -.03em; }
-  h1 { font-size: clamp(40px, 7.2vw, 84px); line-height: .96; font-weight: 800; }
-  h2 { font-size: clamp(28px, 4.2vw, 46px); line-height: 1.05; font-weight: 700; }
-  h3 { font-size: clamp(17px, 1.6vw, 21px); line-height: 1.26; font-weight: 700; letter-spacing: -.015em; }
-  p { margin: 0; }
-  .lede { font-size: clamp(16px, 1.5vw, 19px); line-height: 1.62; color: var(--muted); }
-  .eyebrow { font-family: var(--mono); font-size: 11.5px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); }
-  .sec-label { font-family: var(--mono); font-size: 11.5px; font-weight: 500; letter-spacing: .19em; text-transform: uppercase; color: var(--faint); }
-  .note { font-family: var(--mono); font-size: 12.5px; line-height: 1.72; color: var(--faint); }
-  .mono { font-family: var(--mono); }
-
-  /* surfaces */
-  .glass {
-    background: rgba(26,31,46,.62);
-    border: 1px solid rgba(255,255,255,.09);
-    border-radius: 16px;
-    box-shadow: 0 20px 60px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.05);
-    backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
-  }
-  .card {
-    background: rgba(26,31,46,.55);
-    border: 1px solid rgba(255,255,255,.075);
-    border-radius: 16px;
-    transition: border-color .2s, background .2s, transform .2s;
-  }
-  .card:hover { border-color: rgba(255,255,255,.16); background: rgba(35,41,55,.62); }
-  .rule { height: 1px; background: linear-gradient(90deg, rgba(255,255,255,.14), rgba(255,255,255,0)); border: 0; margin: 0; }
-
-  /* controls */
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-    min-height: 52px; padding: 0 24px; border-radius: 12px;
-    font-family: var(--sans); font-size: 16px; font-weight: 700; letter-spacing: -.01em;
-    border: 1px solid transparent; cursor: pointer; transition: .2s;
-  }
-  .btn-primary { background: var(--accent); color: #06111c; box-shadow: 0 10px 34px rgba(29,161,242,.34); }
-  .btn-primary:hover { filter: brightness(1.12); color: #06111c; transform: translateY(-1px); }
-  .btn-ghost { background: rgba(255,255,255,.04); color: var(--text); border-color: rgba(255,255,255,.14); }
-  .btn-ghost:hover { background: rgba(255,255,255,.09); color: #fff; }
-  .btn-sm { min-height: 44px; padding: 0 18px; font-size: 14.5px; border-radius: 10px; }
-
-  .chip {
-    display: inline-flex; align-items: center; gap: 8px;
-    height: 34px; padding: 0 14px; border-radius: 999px;
-    background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.09);
-    font-family: var(--mono); font-size: 12.5px; color: var(--muted);
-  }
-  a.chip { transition: border-color .2s, background .2s, color .2s; }
-  a.chip:hover { color: var(--text); border-color: rgba(29,161,242,.45); background: rgba(29,161,242,.09); }
-  .dot { width: 6px; height: 6px; border-radius: 999px; flex: none; }
-
-  /* header */
-  header { border-bottom: 1px solid rgba(255,255,255,.05); }
-  .nav { display: flex; align-items: center; gap: 22px; min-height: 76px; }
-  .nav img { height: 34px; width: auto; display: block; filter: brightness(1.45) contrast(1.08); }
-  .nav-links { display: none; gap: 26px; font-size: 14.5px; margin-left: auto; }
-  .nav-links a { color: var(--muted); }
-  .nav-links a:hover { color: #fff; }
-  .nav .cta { margin-left: auto; }
-  @media (min-width: 900px) {
-    .nav-links { display: flex; }
-    .nav .cta { margin-left: 0; }
-  }
-  .vtag {
-    display: none;
-    font-family: var(--mono); font-size: 11.5px; color: var(--faint);
-    border: 1px solid rgba(255,255,255,.10); border-radius: 999px; padding: 4px 11px;
-  }
-  @media (min-width: 620px) { .vtag { display: inline-block; } }
-
-  /* sections */
-  section { padding-top: clamp(56px, 8vw, 110px); }
-  .sec-head { display: flex; flex-direction: column; gap: 16px; }
-  .sec-head-split { display: flex; flex-direction: column; gap: 22px; }
-  @media (min-width: 940px) {
-    .sec-head-split { flex-direction: row; align-items: flex-end; gap: 56px; }
-    .sec-head-split .sec-head { flex: 1 1 auto; }
-    .sec-head-split .note { width: 400px; flex: none; }
-  }
-
-  /* hero */
-  .hero { display: grid; grid-template-columns: minmax(0,1fr); gap: 40px; padding-top: clamp(40px, 5vw, 58px); }
-  @media (min-width: 1000px) { .hero { grid-template-columns: minmax(0,1fr) 480px; gap: 64px; align-items: start; } }
-  .hero-copy { display: flex; flex-direction: column; gap: 20px; }
-  .hero-copy .lede { max-width: 540px; }
-  .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; }
-  .hero-cta .btn { flex: 1 1 240px; }
-  @media (min-width: 520px) { .hero-cta .btn { flex: 0 0 auto; } }
-  .chip-hi { border-color: rgba(255,173,31,.42); background: rgba(255,173,31,.10); color: var(--text); }
-  .hu {
-    max-width: 540px; border-radius: 14px; padding: 17px 20px;
-    border: 1px solid rgba(255,173,31,.30);
-    background: linear-gradient(rgba(255,173,31,.075), rgba(255,173,31,.025)), rgba(26,31,46,.55);
-    display: flex; flex-direction: column; gap: 10px;
-  }
-  .hu-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .hu-k { font-family: var(--mono); font-size: .9em; font-weight: 700; letter-spacing: .07em; color: var(--amber); }
-  .hu p { font-size: 14.5px; line-height: 1.58; color: var(--soft); }
-  .hu-link { font-family: var(--mono); font-size: 12.5px; color: var(--amber); }
-  .hu-link:hover { color: #ffc65c; }
-
-  /* readout panel */
-  .panel-bar { display: flex; align-items: center; gap: 9px; padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,.075); }
-  .tree { padding: 20px 22px; font-family: var(--mono); font-size: 12.5px; line-height: 2; color: var(--dim); }
-  .tree .row { display: flex; }
-  .tree .br { color: var(--faint); width: 34px; flex: none; }
-  .tree .nm { flex: 1 1 auto; }
-
-  /* stat band */
-  .stats { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 30px; }
-  @media (min-width: 900px) { .stats { grid-template-columns: repeat(4, minmax(0,1fr)); gap: 40px; } }
-  .stat-n { font-family: var(--mono); font-size: clamp(32px,3.6vw,46px); font-weight: 700; letter-spacing: -.04em; color: #fff; line-height: 1; }
-  .stat-n span { font-size: .52em; color: var(--dim); }
-  .stat-l { font-family: var(--mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--accent); }
-  .stat-d { font-size: 14px; color: var(--dim); }
-
-  /* grids */
-  .g3 { display: grid; grid-template-columns: minmax(0,1fr); gap: 20px; }
-  @media (min-width: 700px) { .g3 { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 22px; } }
-  @media (min-width: 1000px) { .g3 { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 24px; } }
-  .g2 { display: grid; grid-template-columns: minmax(0,1fr); gap: 22px; }
-  @media (min-width: 900px) { .g2 { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 24px; } }
-
-  .feat { padding: 30px 28px; display: flex; flex-direction: column; gap: 16px; }
-  .feat p { font-size: 15px; line-height: 1.65; color: var(--muted); }
-  .rec { padding: 28px 26px; display: flex; flex-direction: column; gap: 14px; }
-  .rec p { font-size: 14.5px; line-height: 1.65; color: var(--muted); }
-  .rec .win { color: var(--green); }
-  .rec .lose { color: var(--rose); }
-  .rec .glink { font-family: var(--mono); font-size: 12.5px; margin-top: auto; padding-top: 6px; }
-  .rec .glink:hover { color: #6cc4f7; }
-  .rec-h { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-  .rec-h .ver { font-family: var(--mono); font-size: 12px; color: var(--faint); }
-
-  /* tables */
-  .tscroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 13px; min-width: 340px; }
-  th { text-align: right; font-weight: 500; color: var(--faint); padding: 0 0 13px 0; letter-spacing: .08em; text-transform: uppercase; font-size: 10.5px; border-bottom: 1px solid rgba(255,255,255,.10); white-space: nowrap; }
-  th.lead, td.lead { text-align: left; }
-  td { text-align: right; padding: 12px 0; color: var(--soft); border-bottom: 1px solid rgba(255,255,255,.045); white-space: nowrap; }
-  td.lead { color: var(--dim); padding-right: 16px; }
-  tr:last-child td { border-bottom: 0; }
-  .best { color: #fff; font-weight: 700; }
-  .t6 { min-width: 620px; }
-  .t6 th + th, .t6 td + td { padding-left: 26px; }
-
-  /* access */
-  .access { display: grid; grid-template-columns: minmax(0,1fr); gap: 22px; align-items: stretch; }
-  @media (min-width: 960px) { .access { grid-template-columns: 1.25fr 1fr; gap: 24px; } }
-  .plan { padding: clamp(28px,3vw,40px) clamp(24px,2.6vw,42px); display: flex; flex-direction: column; gap: 24px; }
-  .plan-h { display: flex; align-items: center; gap: 13px; flex-wrap: wrap; }
-  .plan-h .t { font-size: clamp(22px,2.4vw,26px); font-weight: 700; letter-spacing: -.025em; }
-  .price { display: flex; align-items: baseline; gap: 15px; flex-wrap: wrap; padding: 16px 18px; border-radius: 14px; background: rgba(29,161,242,.10); border: 1px solid rgba(29,161,242,.30); }
-  .price-n { font-size: clamp(30px,3.4vw,38px); font-weight: 800; letter-spacing: -.03em; line-height: 1; color: var(--accent); }
-  .price-w { flex: 1 1 220px; font-size: 14.5px; line-height: 1.6; color: var(--soft); }
-  .price-w strong { color: var(--text); font-weight: 700; }
-  .badge { font-family: var(--mono); font-size: 10.5px; letter-spacing: .13em; text-transform: uppercase; border-radius: 999px; padding: 5px 12px; font-weight: 700; }
-  .badge-on { color: #06111c; background: var(--accent); }
-  .badge-off { color: var(--dim); border: 1px solid rgba(255,255,255,.14); font-weight: 500; }
-  .flist { display: flex; flex-direction: column; gap: 12px; }
-  .fitem { display: flex; gap: 12px; align-items: flex-start; font-size: 15px; line-height: 1.55; }
-  .fitem svg { flex: none; margin-top: 3px; }
-  .plan-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto; padding-top: 6px; }
-  .plan-cta .btn { flex: 1 1 220px; }
-  @media (min-width: 620px) { .plan-cta .btn { flex: 0 0 auto; } }
-
-  /* quickstart */
-  .qs { display: grid; grid-template-columns: minmax(0,1fr); gap: 32px; align-items: start; }
-  @media (min-width: 960px) { .qs { grid-template-columns: 380px minmax(0,1fr); gap: 56px; } }
-  pre { margin: 0; padding: 24px; font-family: var(--mono); font-size: 12.5px; line-height: 1.95; color: var(--soft); overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  pre .c1 { color: var(--green); } pre .c2 { color: var(--amber); } pre .c3 { color: var(--rose); } pre .c4 { color: var(--accent); } pre .c5 { color: var(--faint); }
-
-  /* screenshots */
-  .shot { display: block; width: 100%; height: auto; border-radius: 12px; border: 1px solid rgba(255,255,255,.09); box-shadow: 0 20px 60px rgba(0,0,0,.5); }
-  .shot-fig { display: flex; flex-direction: column; gap: 14px; margin: 0; }
-  .shot-cap { font-size: 14.5px; line-height: 1.6; color: var(--dim); }
-  .shot-cap b { color: var(--soft); font-weight: 700; }
-
-  /* footer */
-  footer { margin-top: clamp(60px, 8vw, 110px); border-top: 1px solid rgba(255,255,255,.075); background: rgba(11,14,20,.5); }
-  .foot { display: flex; flex-direction: column; gap: 32px; padding-top: 44px; padding-bottom: 52px; }
-  .foot-links { display: flex; gap: 40px; flex-wrap: wrap; }
-  @media (min-width: 1000px) {
-    .foot { flex-direction: row; gap: 56px; }
-    .foot-brand { flex: 0 1 380px; }
-    .foot-spacer { flex: 1 1 auto; }
-    .foot-links { gap: 56px; flex: none; }
-  }
-  .foot-brand img { height: 28px; width: auto; display: block; filter: brightness(1.2); opacity: .8; margin-bottom: 16px; }
-  .fcol { display: flex; flex-direction: column; gap: 11px; min-width: 150px; }
-  .fcol .ttl { font-family: var(--mono); font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--faint); padding-bottom: 3px; }
-  .fcol a { font-size: 14.5px; color: var(--muted); }
-  .fcol a:hover { color: #fff; }
-
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
-</style>
+<link rel="stylesheet" href="/site.css?v=20260909">
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to content</a>
 
 <div class="atmos" aria-hidden="true">
   <div class="mesh"></div>
@@ -318,9 +48,9 @@
 
 <header>
   <div class="wrap nav">
-    <img src="logo.png" alt="zurg">
+    <a class="brand" href="/" aria-label="zurg home"><img src="logo.png" alt="zurg"></a>
     <span class="vtag">a new build every day</span>
-    <nav class="nav-links">
+    <nav class="nav-links" aria-label="Main navigation">
       <a href="https://notes.debridmediamanager.com/">Docs</a>
       <a href="android.html">Android</a>
       <a href="#numbers">Speed</a>
@@ -334,7 +64,7 @@
   </div>
 </header>
 
-<main>
+<main id="main-content" tabindex="-1">
 
   <!-- HERO -->
   <div class="wrap hero">
@@ -515,7 +245,7 @@
             <h3>Reading speed</h3>
             <p style="font-size:14px;color:var(--dim)">256 MB cold reads. Six runs each on rotating offsets so nothing was ever served warm.</p>
           </div>
-          <div class="tscroll">
+          <div class="tscroll" tabindex="0" role="region" aria-label="Scrollable benchmark table">
             <table class="t6">
               <tr><th class="lead">&nbsp;</th><th>zurg</th><th>2nd</th><th>3rd</th><th>4th</th><th>5th</th></tr>
               <tr><td class="lead">Average MB/s</td><td class="best">48.42</td><td>36.65</td><td>25.58</td><td>18.51</td><td>12.94</td></tr>
@@ -531,7 +261,7 @@
             <h3>How it feels</h3>
             <p style="font-size:14px;color:var(--dim)">The last two rows run through the real Plex web player and not a synthetic read.</p>
           </div>
-          <div class="tscroll">
+          <div class="tscroll" tabindex="0" role="region" aria-label="Scrollable benchmark table">
             <table class="t6">
               <tr><th class="lead">&nbsp;</th><th>zurg</th><th>2nd</th><th>3rd</th><th>4th</th><th>5th</th></tr>
               <tr><td class="lead">Cold open</td><td class="best">0.301 s</td><td>1.328 s</td><td>1.722 s</td><td>3.496 s</td><td>5.299 s</td></tr>
@@ -550,7 +280,7 @@
           <h3>Living with it</h3>
           <p style="font-size:14px;color:var(--dim)">Not speed. What you actually have to run and look after once it is up.</p>
         </div>
-        <div class="tscroll">
+        <div class="tscroll" tabindex="0" role="region" aria-label="Scrollable benchmark table">
           <table class="t6">
             <tr><th class="lead">&nbsp;</th><th>zurg</th><th>The other four</th></tr>
             <tr><td class="lead">Brings up the mount itself</td><td class="best">yes</td><td>two of them do</td></tr>
@@ -642,7 +372,7 @@
           <h3>Each account on its own</h3>
           <p style="font-size:14px;color:var(--dim)">Reading 256 MB straight through from one account at a time. Three runs each on 2026-08-30.</p>
         </div>
-        <div class="tscroll">
+        <div class="tscroll" tabindex="0" role="region" aria-label="Scrollable benchmark table">
           <table class="t6">
             <tr><th class="lead">&nbsp;</th><th>Real-Debrid</th><th>AllDebrid</th><th>TorBox</th><th>Usenet</th></tr>
             <tr><td class="lead">Average speed in MiB/s</td><td class="best">68.9</td><td>37.2</td><td>68.3</td><td>43.6</td></tr>
@@ -659,7 +389,7 @@
             <h3>Press play</h3>
             <p style="font-size:14px;color:var(--dim)">Each one measured on a freshly started zurg on 2026-08-19.</p>
           </div>
-          <div class="tscroll">
+          <div class="tscroll" tabindex="0" role="region" aria-label="Scrollable benchmark table">
             <table>
               <tr><th class="lead">&nbsp;</th><th>Real-Debrid</th><th>AllDebrid</th><th>TorBox</th></tr>
               <tr><td class="lead">Opening a file</td><td>1.294 s</td><td class="best">0.476 s</td><td>0.565 s</td></tr>
@@ -676,7 +406,7 @@
             <h3>On Usenet</h3>
             <p style="font-size:14px;color:var(--dim)">The shapes the run above does not cover. From the five way benchmark on 2026-08-30.</p>
           </div>
-          <div class="tscroll">
+          <div class="tscroll" tabindex="0" role="region" aria-label="Scrollable benchmark table">
             <table>
               <tr><th class="lead">&nbsp;</th><th>Usenet</th></tr>
               <tr><td class="lead">Opening a file</td><td>0.301 s</td></tr>
@@ -822,8 +552,8 @@
             <div class="fitem"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#17bf63" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg><span style="color:var(--soft)">Nightly binaries and the full source code plus the private Docker image</span></div>
             <div class="fitem"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#17bf63" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg><span style="color:var(--soft)">Sponsors only features on Debrid Media Manager. We are announcing those soon</span></div>
           </div>
-          <p class="note" style="color:var(--soft);font-size:13.5px">The same $4 covers the nightly builds of zurg and the full zurg source code and the sponsors only features on Debrid Media Manager.</p>
-          <p class="note" style="color:var(--soft);font-size:13.5px">Whatever you pull inside your month stays yours to keep running after the month is over. Pay again whenever you want another month of updates.</p>
+          <p class="note" style="color:var(--soft)">The same $4 covers the nightly builds of zurg and the full zurg source code and the sponsors only features on Debrid Media Manager.</p>
+          <p class="note" style="color:var(--soft)">Whatever you pull inside your month stays yours to keep running after the month is over. Pay again whenever you want another month of updates.</p>
           <div class="plan-cta">
             <a class="btn btn-primary" href="https://gatekeeper.debridmediamanager.com/">Get access</a>
             <a class="btn btn-ghost" href="https://www.patreon.com/posts/guide-to-pulling-105779285">Pulling the image</a>
@@ -864,7 +594,7 @@
           <span class="mono" style="font-size:11.5px;color:var(--faint);letter-spacing:.1em">CONVENIENCE INSTALL</span>
           <span class="mono" style="font-size:11.5px;color:var(--faint);margin-left:auto">Linux · macOS · Windows · Docker</span>
         </div>
-<pre><span class="c5"># Linux and macOS</span>
+<pre tabindex="0" aria-label="Installation commands"><span class="c5"># Linux and macOS</span>
 <span class="c1">curl</span> -fsSL https://zurg.debridmediamanager.com/install.sh | bash
 
 <span class="c5"># Windows PowerShell</span>
@@ -901,6 +631,11 @@
       <p class="note">zurg and <a href="https://debridmediamanager.com/">Debrid Media Manager</a> are built by <a href="https://github.com/yowmamasita/">yowmamasita</a>. One developer in free time. Nightly access is for GitHub Sponsors and Patreon supporters and it is what pays for the hosting.</p>
     </div>
   </div>
+  <nav class="wrap footer-nav" aria-label="Footer navigation">
+    <a href="/">zurg</a><a href="/android.html">Android</a><a href="/jellyfin/">Jellyfin</a>
+    <a href="https://notes.debridmediamanager.com/">Documentation</a>
+    <a href="https://gatekeeper.debridmediamanager.com/">Sponsor access</a>
+  </nav>
 </footer>
 
 </body>
