@@ -5,10 +5,12 @@
 #   iex : The property 'OSArchitecture' cannot be found on this object.
 #
 # Get-PlatformArchitecture read [System.Runtime.InteropServices.RuntimeInformation]
-# and nothing else. PSReadLine and other modules ship their own copy of that
-# class, and on a Windows whose mscorlib carries no copy of its own the bare
-# type name resolves to theirs, which has no OSArchitecture property. One
-# missing property took the whole installer down on its second statement.
+# and nothing else. PSReadLine carries its own copy of that class with no
+# OSArchitecture property, and once PSReadLine is loaded any script parsed
+# afterwards resolves the bare type name to PSReadLine's copy. Every
+# interactive console has PSReadLine loaded, so the installer died on the
+# second statement it ran, while the same file run with -File from a
+# non-interactive shell on the same machine was fine.
 #
 # These drive the real script through its dry run, which prints the platform and
 # stops before it touches WinFsp, GitHub or a release. Run under both hosts:
@@ -102,18 +104,37 @@ Test-Case 'falls back to .NET when the environment says nothing' @{
     PROCESSOR_ARCHITECTURE = $null; PROCESSOR_ARCHITEW6432 = $null
 } 'Platform: windows-amd64'
 
+function Test-Command([string]$Name, [string]$Command, [string]$Expected) {
+    $output = Invoke-Host "-NoProfile -Command `"$Command`"" @{ ZURG_INSTALL_DRY_RUN = '1' }
+    if ($output -match [regex]::Escape($Expected)) {
+        Write-Host "PASS  $Name"
+    }
+    else {
+        Write-Host "FAIL  $Name"
+        Write-Host "      expected to find: $Expected"
+        foreach ($line in ($output -split "`r?`n")) { Write-Host "      | $line" }
+        $script:failures++
+    }
+}
+
 # The reported command was a pipeline into iex, not a file invocation, and the
 # two differ: iex runs in the caller's scope, where $args and $PSScriptRoot
 # belong to the console rather than to the script.
-$piped = Invoke-Host "-NoProfile -Command `"Get-Content -Raw '$installer' | Invoke-Expression`"" @{ ZURG_INSTALL_DRY_RUN = '1' }
-if ($piped -match 'Platform: windows-') {
-    Write-Host "PASS  the irm | iex pipeline runs"
-}
-else {
-    Write-Host "FAIL  the irm | iex pipeline runs"
-    foreach ($line in ($piped -split "`r?`n")) { Write-Host "      | $line" }
-    $failures++
-}
+Test-Command 'the irm | iex pipeline runs' `
+    "Get-Content -Raw '$installer' | Invoke-Expression" `
+    'Platform: windows-'
+
+# This is the reported failure itself. An interactive console always has
+# PSReadLine loaded before anything is typed into it, so the installer is
+# always parsed after it. Drop the Import-Module and the same command passes,
+# which is why a -File run reproduces nothing.
+Test-Command 'runs with PSReadLine already loaded' `
+    "Import-Module PSReadLine; Get-Content -Raw '$installer' | Invoke-Expression" `
+    'Platform: windows-'
+
+Test-Command 'runs with PSReadLine loaded and invoked as a file' `
+    "Import-Module PSReadLine; & '$installer'" `
+    'Platform: windows-' 
 
 Write-Host ""
 if ($failures -gt 0) { Write-Host "$failures failed"; exit 1 }
