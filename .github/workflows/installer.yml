@@ -1,0 +1,21 @@
+name: installer
+on:
+  push:
+    paths:
+      - 'public/install.ps1'
+      - 'tests/**'
+      - '.github/workflows/installer.yml'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Windows PowerShell 5.1
+        shell: powershell
+        run: .\tests\Test-Installer.ps1
+      - name: PowerShell 7
+        shell: pwsh
+        run: .\tests\Test-Installer.ps1

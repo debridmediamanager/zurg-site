@@ -18,11 +18,30 @@ function Write-Step([string]$Message) {
 }
 
 function Get-PlatformArchitecture {
-    $machine = [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString()
-    switch ($machine) {
-        "X86" { return "386" }
-        "X64" { return "amd64" }
-        "Arm64" {
+    # Windows itself sets these and they need no .NET at all. Under WOW64 the
+    # real architecture of the OS is the one in PROCESSOR_ARCHITEW6432, while
+    # PROCESSOR_ARCHITECTURE only describes the 32-bit process, so read that
+    # one first.
+    #
+    # Asking .NET is the fallback rather than the first move on purpose.
+    # PSReadLine and other modules ship their own copy of the class behind
+    # [System.Runtime.InteropServices.RuntimeInformation], and where mscorlib
+    # carries no copy of its own the bare type name resolves to theirs, which
+    # has no OSArchitecture property. That answered every `irm ... | iex` with
+    # "The property 'OSArchitecture' cannot be found on this object" on the
+    # second statement the installer ran. Naming mscorlib picks the real class.
+    $machine = $env:PROCESSOR_ARCHITEW6432
+    if (-not $machine) { $machine = $env:PROCESSOR_ARCHITECTURE }
+    if (-not $machine) {
+        try { $machine = [System.Runtime.InteropServices.RuntimeInformation, mscorlib]::OSArchitecture.ToString() }
+        catch { throw "Windows reported no processor architecture, so no zurg build could be chosen." }
+    }
+    # Two vocabularies reach this: the environment says AMD64/x86/ARM64 and .NET
+    # says X64/X86/Arm64. -Regex matches case-insensitively.
+    switch -Regex ($machine) {
+        '^x86$' { return "386" }
+        '^(amd64|x64)$' { return "amd64" }
+        '^arm64$' {
             Write-Host "Windows on ARM will use zurg's x64 binary through Windows emulation."
             return "amd64"
         }
