@@ -1,0 +1,17 @@
+name: nav
+on:
+  push:
+    paths:
+      - 'public/**.html'
+      - 'tests/nav-consistency.py'
+      - '.github/workflows/nav.yml'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  consistency:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Every page shows the same navigation
+        run: python3 tests/nav-consistency.py

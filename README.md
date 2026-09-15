@@ -24,8 +24,27 @@ public/
   robots.txt
   sitemap.xml
 deploy.sh            ships public/ to Cloudflare Pages or an ssh host
-tests/               browser measurements and captured baseline fixtures
+tests/               navigation checks, browser measurements, captured baselines
 ```
+
+## Navigation
+
+All three pages share one header. The brand comes first, then the link back to
+the folder and that page's own sections, then the same four site links in the
+same order every time: Android, Jellyfin, Docs, GitHub. The page you are on is
+marked with `aria-current="page"`, on the brand for the folder itself. Every
+page carries the same five footer links. Internal links are root-absolute so
+they mean the same thing from `/jellyfin/` as from `/`.
+
+Equal item counts are deliberate. They keep the header the same height on every
+page, so navigating does not shift the content under it.
+
+```bash
+python3 tests/nav-consistency.py
+```
+
+No browser and no server. It reads the shipped HTML and fails with one line per
+inconsistency.
 
 ## Browser verification
 

@@ -138,13 +138,6 @@
     .nav-links { display: flex; }
     .nav .cta { margin-left: 0; }
   }
-  .vtag {
-    display: none;
-    font-family: var(--mono); font-size: 11.5px; color: var(--faint);
-    border: 1px solid rgba(255,255,255,.10); border-radius: 999px; padding: 4px 11px;
-  }
-  @media (min-width: 620px) { .vtag { display: inline-block; } }
-
   /* sections */
   section { padding-top: clamp(56px, 8vw, 110px); }
   .sec-head { display: flex; flex-direction: column; gap: 16px; }
@@ -282,7 +275,6 @@ p a:not(.btn), .note a, .hu-link { text-decoration: underline; text-underline-of
 .nav { display: flex; flex-wrap: wrap; gap: 8px 20px; padding-top: 16px; padding-bottom: 12px; }
 .nav > .brand, .nav > a:first-child { flex: 0 1 auto; }
 .nav img { width: 126px; height: auto; max-height: 34px; object-fit: contain; }
-.nav .vtag { display: none; }
 .nav .cta { margin-left: auto; }
 .nav-links { display: flex; flex: 1 0 100%; order: 3; flex-wrap: wrap; gap: 0 20px; margin: 0; font-size: 15px; }
 .nav-links a, .footer-nav a { display: inline-flex; align-items: center; min-height: 44px; }
