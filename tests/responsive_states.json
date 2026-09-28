@@ -1,0 +1,23 @@
+{
+  "/": {
+    "status": "verified",
+    "state": "static-landing",
+    "reason": "Public landing page rendered.",
+    "expectHeading": "^Debrid and\\s*Usenet",
+    "expectPath": "/(index\\.html)?"
+  },
+  "/android.html": {
+    "status": "verified",
+    "state": "static-guide",
+    "reason": "Public Android guide rendered.",
+    "expectHeading": "^Your library\\.\\s*On your device",
+    "expectPath": "/android(\\.html)?"
+  },
+  "/jellyfin/": {
+    "status": "verified",
+    "state": "static-guide",
+    "reason": "Public Jellyfin guide rendered.",
+    "expectHeading": "^Your debrid library",
+    "expectPath": "/jellyfin/(index\\.html)?"
+  }
+}

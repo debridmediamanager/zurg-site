@@ -1,0 +1,18 @@
+[
+  {
+    "route": "/",
+    "classContains": "tscroll",
+    "reason": "Benchmark tables are intentionally horizontally scrollable on narrow screens."
+  },
+  {
+    "route": "/",
+    "tag": "PRE",
+    "reason": "Install command examples are intentionally horizontally scrollable code blocks."
+  },
+  {
+    "route": "/",
+    "classContains": "mono",
+    "textIncludes": "debian-stable-amd64-netinst.iso",
+    "reason": "The long benchmark filename is intentionally clipped within its result card."
+  }
+]
