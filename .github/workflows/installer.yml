@@ -3,6 +3,8 @@ on:
   push:
     paths:
       - 'public/install.ps1'
+      - 'public/install.sh'
+      - 'public/install-docker.sh'
       - 'tests/**'
       - '.github/workflows/installer.yml'
   pull_request:
@@ -19,3 +21,17 @@ jobs:
       - name: PowerShell 7
         shell: pwsh
         run: .\tests\Test-Installer.ps1
+
+  shell:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Shell installers
+        run: bash tests/test-install-sh.sh
+      - name: Shell installers under the system bash
+        if: runner.os == 'macOS'
+        run: /bin/bash tests/test-install-sh.sh

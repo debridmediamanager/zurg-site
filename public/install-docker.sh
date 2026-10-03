@@ -94,7 +94,10 @@ select_docker_command() {
 download_portable_gh() {
   local release_json tag version asset archive extracted
   release_json=$(curl -fsSL https://api.github.com/repos/cli/cli/releases/latest)
-  tag=$(printf '%s\n' "$release_json" | sed -n 's/^[[:space:]]*"tag_name":[[:space:]]*"\([^"]*\)".*/\1/p' | head -n 1)
+  # GitHub's API answers in compact JSON, the whole release on one line, so the
+  # tag cannot be found by matching the start of a line. Take the first
+  # "tag_name" pair wherever it sits, which also reads the older indented form.
+  tag=$(printf '%s' "$release_json" | grep -o '"tag_name"[[:space:]]*:[[:space:]]*"[^"]*"' | sed -n '1s/.*"\([^"]*\)"$/\1/p') || tag=""
   [[ -n "$tag" ]] || die "Could not determine the latest GitHub CLI release."
   version=${tag#v}
   asset="gh_${version}_linux_${GH_ARCH}.tar.gz"
