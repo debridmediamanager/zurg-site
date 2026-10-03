@@ -63,6 +63,22 @@ loading, and keyboard access to scrollable tables. `--sweep` also checks every
 40 pixels from 320 through 2560 and a landscape viewport. `--report` saves all
 DOM measurements and `--screenshots` saves selected viewport images.
 
+## Installers
+
+```bash
+bash tests/test-install-sh.sh
+```
+
+```powershell
+powershell -NoProfile -File tests\Test-Installer.ps1
+pwsh -NoProfile -File tests\Test-Installer.ps1
+```
+
+The shell tests load the functions of `install.sh` and `install-docker.sh` and
+answer their downloads from the GitHub response recorded in
+`tests/fixtures/installer`. Nothing reaches the network. The PowerShell tests
+need Windows. The `installer` workflow runs both whenever an installer changes.
+
 ## Deploying
 
 ```bash

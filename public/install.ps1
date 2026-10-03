@@ -72,7 +72,14 @@ function Get-GitHubCli {
     $command = Get-Command gh -ErrorAction SilentlyContinue
     if ($command) { return $command.Source }
 
-    Write-Step "Downloading a temporary GitHub CLI"
+    # zurg update signs in through this same gh later. A gh.exe downloaded into
+    # $TempDir went with it when the installer finished, and every zurg update
+    # after the install then stopped with "no GitHub credential found". So it is
+    # kept in bin\ beside zurg, next to the rclone and ffprobe that setup puts there.
+    $kept = Join-Path $InstallDir "bin\gh.exe"
+    if (Test-Path $kept) { return $kept }
+
+    Write-Step "Downloading the GitHub CLI"
     $release = Invoke-RestMethod -Headers @{ "User-Agent" = "zurg-installer" } -Uri "https://api.github.com/repos/cli/cli/releases/latest"
     $asset = $release.assets | Where-Object { $_.name -match '_windows_amd64\.zip$' } | Select-Object -First 1
     if (-not $asset) { throw "The latest GitHub CLI release has no Windows x64 archive." }
@@ -82,7 +89,10 @@ function Get-GitHubCli {
     Expand-Archive -Path $archive -DestinationPath $destination -Force
     $binary = Get-ChildItem -Path $destination -Filter gh.exe -Recurse | Select-Object -First 1
     if (-not $binary) { throw "The downloaded GitHub CLI archive did not contain gh.exe." }
-    return $binary.FullName
+    New-Item -ItemType Directory -Force -Path (Split-Path -Parent $kept) | Out-Null
+    Copy-Item -Path $binary.FullName -Destination $kept -Force
+    Write-Host "Keeping it in $(Split-Path -Parent $kept) for zurg update."
+    return $kept
 }
 
 function Connect-GitHub {

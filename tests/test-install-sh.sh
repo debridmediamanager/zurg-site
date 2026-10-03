@@ -175,6 +175,62 @@ check "install-docker.sh reads the tag from GitHub's compact JSON" "$CASE_OUT" \
   '[[ "$CASE_OUT" == *GH_RUNS=yes* ]]' \
   'grep -qx "https://github.com/cli/cli/releases/download/v2.102.0/gh_2.102.0_linux_amd64.tar.gz" "$CASE_DIR/curl.log"'
 
+# --- the GitHub CLI stays for zurg update ----------------------------------
+#
+# Card 170, reproduced on zen 2026-10-03: install.sh downloaded gh into its
+# temporary directory to sign the user in and deleted it on exit. zurg update
+# signs in through that same gh, so straight after a normal install it stopped
+# with "no GitHub credential found" while the sign-in itself was still saved.
+
+new_stub_gh() {
+  mkdir -p "$(dirname "$1")"
+  printf '#!/bin/sh\nexit 0\n' >"$1"
+  chmod +x "$1"
+}
+
+# github_access_case PATH [kept]: ensure_github_access as install.sh runs it,
+# then the installer's exit, which empties its temporary directory. With
+# "kept", the gh an earlier run kept is already in bin/.
+github_access_case() {
+  local path=$1 dir
+  new_case
+  dir=$CASE_DIR
+  if [[ "${2:-}" == kept ]]; then
+    new_stub_gh "$dir/zurg/bin/gh"
+  fi
+  CASE_OUT=$(
+    exec 2>&1
+    cd "$dir" || exit 1
+    export PATH="$path" HOME="$dir/home" CURL_LOG="$dir/curl.log" GH_RELEASE_JSON="$COMPACT"
+    # shellcheck disable=SC1090
+    source "$INSTALL_SH"
+    # shellcheck disable=SC1090
+    source "$STUBS"
+    OS=linux ARCH=amd64 INSTALL_DIR="$dir/zurg" TEMP_DIR="$dir/tmp"
+    ensure_github_access
+    printf 'GH_BIN=%s\n' "$GH_BIN"
+  )
+}
+
+github_access_case "$NO_GH_PATH"
+check "install.sh keeps the GitHub CLI it downloads beside zurg" "$CASE_OUT" \
+  '[[ -x "$CASE_DIR/zurg/bin/gh" ]]' \
+  '[[ "$CASE_OUT" == *"GH_BIN=$CASE_DIR/zurg/bin/gh"* ]]' \
+  '[[ ! -e "$CASE_DIR/tmp" ]]'
+
+github_access_case "$NO_GH_PATH" kept
+check "install.sh signs in with the GitHub CLI it kept instead of downloading another" "$CASE_OUT" \
+  '[[ "$CASE_OUT" == *"GH_BIN=$CASE_DIR/zurg/bin/gh"* ]]' \
+  '[[ ! -s "$CASE_DIR/curl.log" ]]'
+
+ON_PATH="$SCRATCH/gh-on-path"
+new_stub_gh "$ON_PATH/gh"
+github_access_case "$ON_PATH:$NO_GH_PATH"
+check "install.sh uses a GitHub CLI already installed and keeps no copy" "$CASE_OUT" \
+  '[[ "$CASE_OUT" == *"GH_BIN=$ON_PATH/gh"* ]]' \
+  '[[ ! -e "$CASE_DIR/zurg/bin/gh" ]]' \
+  '[[ ! -s "$CASE_DIR/curl.log" ]]'
+
 printf '\n'
 if ((failures > 0)); then
   printf '%d of %d failed\n' "$failures" "$cases"

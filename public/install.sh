@@ -120,11 +120,23 @@ download_portable_gh() {
 }
 
 ensure_github_access() {
+  # zurg update signs in through this same gh later. A gh downloaded into the
+  # temporary directory went with it on exit, and every zurg update after the
+  # install then stopped with "no GitHub credential found". So it is kept in
+  # bin/ beside zurg, next to the rclone and ffprobe that setup puts there.
+  local kept="$INSTALL_DIR/bin/gh"
   if command -v gh >/dev/null 2>&1; then
     GH_BIN=$(command -v gh)
+  elif [[ -x "$kept" ]]; then
+    GH_BIN=$kept
   else
-    say "Downloading a temporary GitHub CLI"
+    say "Downloading the GitHub CLI"
     download_portable_gh
+    mkdir -p "$INSTALL_DIR/bin"
+    install -m 0755 "$GH_BIN" "$kept.incoming"
+    mv -f "$kept.incoming" "$kept"
+    GH_BIN=$kept
+    printf 'Keeping it in %s for zurg update.\n' "$INSTALL_DIR/bin"
   fi
 
   if ! "$GH_BIN" auth status --hostname github.com >/dev/null 2>&1; then
