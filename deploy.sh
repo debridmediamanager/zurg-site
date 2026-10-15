@@ -37,7 +37,8 @@ case "${1:-}" in
     fi
     ;;
   pages)
-    npx --yes wrangler@latest pages deploy "$PWD/public" \
+    # wrangler 4.151 turns `pages` commands into a Workers deploy; 4.40.0 still deploys Pages.
+    npx --yes wrangler@4.40.0 pages deploy "$PWD/public" \
       --project-name="${CF_PAGES_PROJECT:-zurg}" --branch=main --commit-dirty=true
     ;;
   *) echo "usage: $0 [pages|host]" >&2; exit 2 ;;
