@@ -33,7 +33,8 @@ All three pages share one header. The brand comes first, then the link back to
 the folder and that page's own sections, then the same four site links in the
 same order every time: Android, Jellyfin, Docs, GitHub. The page you are on is
 marked with `aria-current="page"`, on the brand for the folder itself. Every
-page carries the same five footer links. Internal links are root-absolute so
+page carries the same footer links, which include the other sites (rex, DMM, sponsor
+access) and Discord. Internal links are root-absolute so
 they mean the same thing from `/jellyfin/` as from `/`.
 
 Equal item counts are deliberate. They keep the header the same height on every

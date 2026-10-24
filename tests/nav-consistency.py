@@ -38,7 +38,10 @@ FOOTER_LINKS = [
     ('Android',       SITE + 'android.html'),
     ('Jellyfin',      SITE + 'jellyfin/'),
     ('Documentation', 'https://notes.debridmediamanager.com/'),
+    ('rex',           'https://rex.debridmediamanager.com/'),
+    ('Debrid Media Manager', 'https://debridmediamanager.com/'),
     ('Sponsor access', 'https://gatekeeper.debridmediamanager.com/'),
+    ('Discord',       'https://discord.com/invite/7u4YjMThXP'),
 ]
 
 BRAND = {'class': 'brand', 'aria-label': 'zurg home', 'href': SITE}
@@ -147,7 +150,7 @@ def main():
             check(raw.startswith(('/', '#', 'https://', 'http://')),
                   f'{where}: {link["text"]!r} uses {raw!r}, internal links must be root-absolute')
 
-        # One footer, same five links, everywhere.
+        # One footer, same links, everywhere.
         got_footer = [(link['text'], link['href']) for link in nav.footer_links]
         check(got_footer == FOOTER_LINKS,
               f'{where}: footer nav must be {FOOTER_LINKS}, got {got_footer}')
