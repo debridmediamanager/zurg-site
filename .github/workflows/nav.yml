@@ -4,6 +4,7 @@ on:
     paths:
       - 'public/**.html'
       - 'tests/nav-consistency.py'
+      - 'tests/private-links.py'
       - '.github/workflows/nav.yml'
   pull_request:
   workflow_dispatch:
@@ -15,3 +16,5 @@ jobs:
       - uses: actions/checkout@v4
       - name: Every page shows the same navigation
         run: python3 tests/nav-consistency.py
+      - name: Links into the private repository offer a way to get access
+        run: python3 tests/private-links.py
