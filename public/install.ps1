@@ -2,6 +2,9 @@ $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 Set-StrictMode -Version Latest
 
+# Any failure ends with where to ask, then stops as it did before.
+trap { Write-Host "`nStuck? Ask in the zurg-support forum on Discord https://discord.com/invite/7u4YjMThXP" -ForegroundColor Yellow; break }
+
 $ZurgRepo = if ($env:ZURG_REPO) { $env:ZURG_REPO } else { "debridmediamanager/zurg" }
 $InstallDir = if ($env:ZURG_INSTALL_DIR) { $env:ZURG_INSTALL_DIR } else { Join-Path $HOME "zurg" }
 $DryRun = $env:ZURG_INSTALL_DRY_RUN -eq "1"

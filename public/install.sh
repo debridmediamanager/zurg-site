@@ -10,7 +10,7 @@ TTY_PATH=/dev/tty
 TEMP_DIR=""
 
 say() { printf '\n==> %s\n' "$*"; }
-die() { printf '\nError: %s\n' "$*" >&2; exit 1; }
+die() { printf '\nError: %s\n\nStuck? Ask in the zurg-support forum on Discord https://discord.com/invite/7u4YjMThXP\n' "$*" >&2; exit 1; }
 
 cleanup() {
   if [[ -n "$TEMP_DIR" && -d "$TEMP_DIR" ]]; then
