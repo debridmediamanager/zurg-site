@@ -144,7 +144,7 @@ ensure_github_access() {
     say "Sign in to GitHub with the account that has zurg access"
     "$GH_BIN" auth login --hostname github.com --git-protocol https --web <"$TTY_PATH"
   fi
-  "$GH_BIN" api "repos/$ZURG_REPO" >/dev/null 2>&1 || die "This GitHub account cannot access $ZURG_REPO. Check your sponsorship access and try again."
+  "$GH_BIN" api "repos/$ZURG_REPO" >/dev/null 2>&1 || die "This GitHub account cannot access $ZURG_REPO. Sponsor or link this GitHub account at https://gatekeeper.debridmediamanager.com/ and try again."
 }
 
 install_macos_fuse() {

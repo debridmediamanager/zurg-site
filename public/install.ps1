@@ -118,7 +118,7 @@ function Connect-GitHub {
     finally {
         $ErrorActionPreference = $savedErrorActionPreference
     }
-    if ($repoStatus -ne 0) { throw "This GitHub account cannot access $ZurgRepo. Check your sponsorship access and try again." }
+    if ($repoStatus -ne 0) { throw "This GitHub account cannot access $ZurgRepo. Sponsor or link this GitHub account at https://gatekeeper.debridmediamanager.com/ and try again." }
 }
 
 function Get-ZurgRelease([string]$Architecture) {

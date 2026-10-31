@@ -122,7 +122,7 @@ ensure_github_access() {
     say "Sign in to GitHub with the account that has zurg access"
     "$GH_BIN" auth login --hostname github.com --git-protocol https --web --scopes read:packages,repo <"$TTY_PATH"
   fi
-  "$GH_BIN" api "repos/$ZURG_REPO" >/dev/null 2>&1 || die "This GitHub account cannot access $ZURG_REPO."
+  "$GH_BIN" api "repos/$ZURG_REPO" >/dev/null 2>&1 || die "This GitHub account cannot access $ZURG_REPO. Sponsor or link this GitHub account at https://gatekeeper.debridmediamanager.com/ and try again."
 }
 
 docker_can_pull_zurg() {
@@ -158,7 +158,7 @@ login_registry() {
   [[ -n "$pat" ]] || die "A package token is required to pull the sponsor image."
   printf '%s' "$pat" | "${DOCKER[@]}" login ghcr.io --username "$login" --password-stdin
   unset pat
-  docker_can_pull_zurg || die "That token cannot pull ghcr.io/debridmediamanager/zurg:$ZURG_TAG. Confirm your sponsor access and that the token has both read:packages and repo."
+  docker_can_pull_zurg || die "That token cannot pull ghcr.io/debridmediamanager/zurg:$ZURG_TAG. Confirm your sponsor access at https://gatekeeper.debridmediamanager.com/ and that the token has both read:packages and repo."
 }
 
 prepare_mount_propagation() {
