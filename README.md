@@ -1,7 +1,7 @@
 # zurg-site
 
 Source for **[zurg.debridmediamanager.com](https://zurg.debridmediamanager.com/)**, the
-landing page for [zurg](https://github.com/debridmediamanager/zurg-public).
+landing page for zurg. zurg's public release lives at [zurg-public](https://github.com/debridmediamanager/zurg-public).
 
 Three hand-written pages share `public/site.css`. No framework and no build step.
 `public/` holds exactly what ships, so the whole directory is published as-is.
@@ -120,3 +120,7 @@ Every figure is sourced from zurg's own measurements, published in
 [zurg's docs](https://notes.debridmediamanager.com/) and the
 [usenet streaming benchmark](https://github.com/debridmediamanager/usenet-streaming-benchmark).
 Nothing goes on the page that is not traceable to one of them.
+
+---
+
+**More from DMM:** [Debrid Media Manager](https://debridmediamanager.com/) · [zurg](https://zurg.debridmediamanager.com/) · [rex](https://rex.debridmediamanager.com/) · [Docs](https://notes.debridmediamanager.com/) · [Sponsor](https://gatekeeper.debridmediamanager.com/) · [Discord](https://discord.com/invite/7u4YjMThXP) · [Reddit](https://www.reddit.com/r/debridmediamanager/)
