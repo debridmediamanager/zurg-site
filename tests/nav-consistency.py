@@ -33,15 +33,18 @@ SHARED_TAIL = [
     ('GitHub',   'https://github.com/debridmediamanager/zurg-public'),
 ]
 
+# The zurg pages first, then the family links every DMM site footer carries, in
+# the same order and with the same labels as rex-site, gatekeeper and the notes nav.
 FOOTER_LINKS = [
     ('zurg',          SITE),
     ('Android',       SITE + 'android.html'),
     ('Jellyfin',      SITE + 'jellyfin/'),
-    ('Documentation', 'https://notes.debridmediamanager.com/'),
-    ('rex',           'https://rex.debridmediamanager.com/'),
     ('Debrid Media Manager', 'https://debridmediamanager.com/'),
-    ('Sponsor access', 'https://gatekeeper.debridmediamanager.com/'),
+    ('rex',           'https://rex.debridmediamanager.com/'),
+    ('Docs',          'https://notes.debridmediamanager.com/'),
+    ('Sponsor',       'https://gatekeeper.debridmediamanager.com/'),
     ('Discord',       'https://discord.com/invite/7u4YjMThXP'),
+    ('Reddit',        'https://www.reddit.com/r/debridmediamanager/'),
 ]
 
 BRAND = {'class': 'brand', 'aria-label': 'zurg home', 'href': SITE}
