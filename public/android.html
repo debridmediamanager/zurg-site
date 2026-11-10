@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>zurg on Android and Google TV</title>
-<meta name="description" content="Run your library on your Android phone or Google TV. Set up providers. Open your players. Share over your local network.">
+<title>zurg+rex on Android and Google TV</title>
+<meta name="description" content="zurg+rex means running a Plex server on your phone. It serves your library to every Plex app at home. Download the app and set it up.">
 <meta name="color-scheme" content="dark">
-<meta property="og:title" content="zurg on Android and Google TV">
-<meta property="og:description" content="Your library runs on your phone or your TV. An installation guide for the zurg Android app.">
+<meta property="og:title" content="zurg+rex on Android and Google TV">
+<meta property="og:description" content="Run a Plex server on your phone. An installation guide for the zurg+rex Android app.">
 <meta property="og:type" content="article">
 <link rel="canonical" href="https://zurg.debridmediamanager.com/android.html">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -32,24 +32,27 @@
 </div></header>
 <main id="main-content" class="guide-content" tabindex="-1">
 <p class="eyebrow">Android · Google TV · Fire TV</p>
-<h1>Your library.<br>On your device.</h1>
-<p class="intro">Run zurg on your phone or TV. Browse your providers. Open your favorite player. Share your library across your home.</p>
-<a class="btn btn-primary" href="/download.html#android">Sponsors download the Android app</a>
-<a class="btn btn-ghost" href="https://gatekeeper.debridmediamanager.com/">Get sponsor access</a>
-<p class="note">Nightly APKs are for sponsors. Sign in to GitHub with the account linked to your access or GitHub shows 404.</p>
+<h1>Your own Plex server.<br>On your phone.</h1>
+<p class="intro">zurg+rex means running a Plex server on your phone. zurg brings in your providers and rex serves them to every Plex app at home. It runs on your TV too and any player can open your files.</p>
 
-<section aria-labelledby="install"><h2 id="install">Choose your APK</h2>
-<p>The same app includes both the phone and TV interfaces. Android 8.0 or newer is required.</p>
-<div class="apk-table"><table><thead><tr><th>Download suffix</th><th>Device</th></tr></thead><tbody>
-<tr><td><code>android-arm64-v8a.apk</code></td><td>Most modern phones and TV boxes</td></tr>
-<tr><td><code>android-armeabi-v7a.apk</code></td><td>Older 32-bit phones and TV sticks</td></tr>
-<tr><td><code>android-x86_64.apk</code></td><td>Compatible Chromebooks and emulators</td></tr>
-</tbody></table></div>
+<section aria-labelledby="install"><h2 id="install">Download zurg+rex</h2>
+<p>Sign in to GitHub with your sponsor account. Then pick your device. Every link points at the newest nightly. The same app has both the phone and TV interfaces. Android 8.0 or newer is required.</p>
+<div class="dl-404" role="note">
+<h3>Getting a 404 from GitHub?</h3>
+<p>GitHub answers 404 when the account you are signed in with has no sponsor access yet. Just sponsored? <a href="https://github.com/debridmediamanager/zurg/invitations">Accept the invite</a> to the repository first. Invites go out within 15 minutes. Not a sponsor yet? <a href="https://gatekeeper.debridmediamanager.com/">Sponsor on gatekeeper</a> and link your GitHub account there.</p>
+</div>
+<ul class="dl-list">
+<li><a data-file="android-arm64-v8a.apk" href="https://github.com/debridmediamanager/zurg/releases">Most phones and TV boxes <code>android-arm64-v8a.apk</code></a></li>
+<li><a data-file="android-armeabi-v7a.apk" href="https://github.com/debridmediamanager/zurg/releases">Older phones and TV sticks <code>android-armeabi-v7a.apk</code></a></li>
+<li><a data-file="android-x86_64.apk" href="https://github.com/debridmediamanager/zurg/releases">Chromebooks and emulators <code>android-x86_64.apk</code></a></li>
+</ul>
+<p class="note" id="build" hidden>Newest build <code id="tag"></code></p>
+<p class="note" id="offline" hidden>The newest file list did not load. Each link opens the release list instead. Take the newest nightly at the top and not the one marked Latest.</p>
 <p>Open the downloaded APK and allow installation from that source. Android or Play Protect may ask you to confirm sideloading.</p>
 <p class="note">Usenet needs a 64-bit device. Install updates over the existing app. Uninstalling removes its private configuration.</p></section>
 
 <section aria-labelledby="setup"><h2 id="setup">Make it yours</h2>
-<ol><li>Open zurg. Sign in to GitHub for updates or continue and sign in later.</li>
+<ol><li>Open zurg+rex and sign in to GitHub. Then install an engine. The app cannot start your library without one.</li>
 <li>Add your provider accounts and test the credentials. Account names let you add more than one account at a provider.</li>
 <li>Choose the profile for your phone or TV. Smaller profiles use smaller disk caches and a lower memory target.</li>
 <li>Allow notifications and background operation. Choose whether zurg starts after reboot.</li>
@@ -63,6 +66,11 @@
 <p>On TV use the D-pad and Select. Select a text field to edit it and press Back to return to navigation. Back returns to the previous folder. Menu or More opens release actions. Fire TV can use WebDAV even when no Files app is installed.</p>
 <p class="note">Repair and delete act on the entire release in its owning provider account. Delete asks for confirmation.</p></section>
 
+<section aria-labelledby="plex"><h2 id="plex">Watch in the Plex apps</h2>
+<p>This is your Plex server running on your phone. Once your library runs Status shows rex for the Plex apps. Choose Sign in to Plex and approve the sign-in. On a TV enter the code at plex.tv/link.</p>
+<p>Your library then shows up under this device’s name in the official Plex apps and in Plezy. That works on this device and on the others in your home. rex converts what a player cannot play with the device’s hardware encoder.</p>
+<p class="note">Turn rex off in Settings under Connection. zurg then stops feeding it.</p></section>
+
 <section aria-labelledby="lan"><h2 id="lan">Watch elsewhere at home</h2>
 <p>In Settings turn on Expose on local network. zurg creates credentials and shows your device’s WebDAV address. Add that address and those credentials to the player on your other device.</p>
 <p>Keep the Android host running and connected. Use a trusted network because HTTP does not encrypt playback or WebDAV credentials. Local sharing is off by default.</p></section>
@@ -71,7 +79,7 @@
 <p>The notification shows the server state and has a Stop action. A Quick Settings tile can also start or stop zurg.</p>
 <p>Allow background operation during setup. Some phone manufacturers need extra battery settings. See the <a href="https://dontkillmyapp.com/">device background guide</a> if playback stops with the screen off.</p>
 <p>Settings includes a YAML editor and a local Web dashboard for advanced features. Logs can be filtered and shared. Backups contain credentials and should be stored privately. Stop the server before restoring.</p>
-<p>Updates checks the sponsor repository and downloads an APK for your device. It checks the app identity and signing key before opening the Android installer. The APK updates the app and its bundled engine together.</p>
+<p>Updates checks the sponsor repository for the app and the engine. They update separately. If a new nightly misbehaves on your device install the engine version that worked for you. Stop your library on Status before changing the engine.</p>
 <p>Stuck? Ask in the zurg-support forum on <a href="https://discord.com/invite/7u4YjMThXP">Discord</a>.</p></section>
 </main>
 <footer class="guide-footer"><p>Your providers. Your players. Your library.</p>
@@ -81,5 +89,6 @@
 <a href="https://notes.debridmediamanager.com/">Docs</a><a href="https://gatekeeper.debridmediamanager.com/">Sponsor</a>
 <a href="https://discord.com/invite/7u4YjMThXP">Discord</a><a href="https://www.reddit.com/r/debridmediamanager/">Reddit</a>
 </nav></footer>
+<script src="/downloads.js"></script>
 </body>
 </html>

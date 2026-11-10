@@ -339,7 +339,7 @@ pre { max-width: 100%; font-size: 14px; }
 }
 /* Download page. */
 .dl-404 { margin-top: 28px; padding: 20px 24px; border: 1px solid rgba(255,173,31,.42); border-left-width: 4px; border-radius: 14px; background: rgba(255,173,31,.08); }
-.dl-404 h2 { font-size: 19px; margin: 0 0 8px; }
+.dl-404 :is(h2, h3) { font-size: 19px; margin: 0 0 8px; }
 .dl-404 p { color: var(--soft); }
 #build, #offline { margin-top: 16px; }
 .guide-content h3 { font-size: 17px; margin: 24px 0 10px; }
