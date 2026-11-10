@@ -10,7 +10,7 @@
     "status": "verified",
     "state": "static-guide",
     "reason": "Public Android guide rendered.",
-    "expectHeading": "^Your own Plex server\\.\\s*On your phone",
+    "expectHeading": "^A Plex server\\.\\s*On your phone",
     "expectPath": "/android(\\.html)?"
   },
   "/jellyfin/": {
