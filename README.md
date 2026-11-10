@@ -3,7 +3,7 @@
 Source for **[zurg.debridmediamanager.com](https://zurg.debridmediamanager.com/)**, the
 landing page for zurg. zurg's public release lives at [zurg-public](https://github.com/debridmediamanager/zurg-public).
 
-Three hand-written pages share `public/site.css`. No framework and no build step.
+Four hand-written pages share `public/site.css`. No framework and no build step.
 `public/` holds exactly what ships, so the whole directory is published as-is.
 
 ## Layout
@@ -11,6 +11,7 @@ Three hand-written pages share `public/site.css`. No framework and no build step
 ```
 public/
   index.html         the main landing page
+  download.html      sponsor downloads, links filled from gatekeeper /api/downloads
   android.html       Android and TV setup guide
   jellyfin/          Jellyfin plugin guide and images
   site.css           shared typography and responsive layouts
@@ -29,9 +30,9 @@ tests/               navigation checks, browser measurements, captured baselines
 
 ## Navigation
 
-All three pages share one header. The brand comes first, then the link back to
-the folder and that page's own sections, then the same four site links in the
-same order every time: Android, Jellyfin, Docs, GitHub. The page you are on is
+All four pages share one header. The brand comes first, then the link back to
+the folder and that page's own sections, then the same five site links in the
+same order every time: Download, Android, Jellyfin, Docs, GitHub. The page you are on is
 marked with `aria-current="page"`, on the brand for the folder itself. Every
 page carries the same footer links, which include the other sites (rex, DMM, sponsor
 access) and Discord. Internal links are root-absolute so

@@ -1,6 +1,6 @@
 """Check that every page presents the same navigation.
 
-Moving between the three pages must not reshuffle the header. The site-wide
+Moving between the pages must not reshuffle the header. The site-wide
 links have to be present, identically labelled, in the same order and pointing
 at the same place from every page, and the page you are on has to say so. This
 reads the shipped HTML directly, so it needs no browser and no server:
@@ -21,12 +21,14 @@ PAGES = [
     ('/',             'index.html',          'The folder'),
     ('/android.html', 'android.html',        'Android'),
     ('/jellyfin/',    'jellyfin/index.html', 'Jellyfin'),
+    ('/download.html', 'download.html',      'Download'),
 ]
 
 # The fixed tail of the header navigation. Same labels, same targets, same
 # order, always last, on every page. Anything before it is that page's own
 # sections plus the link back to the folder.
 SHARED_TAIL = [
+    ('Download', SITE + 'download.html'),
     ('Android',  SITE + 'android.html'),
     ('Jellyfin', SITE + 'jellyfin/'),
     ('Docs',     'https://notes.debridmediamanager.com/'),
@@ -37,6 +39,7 @@ SHARED_TAIL = [
 # the same order and with the same labels as rex-site, gatekeeper and the notes nav.
 FOOTER_LINKS = [
     ('zurg',          SITE),
+    ('Download',      SITE + 'download.html'),
     ('Android',       SITE + 'android.html'),
     ('Jellyfin',      SITE + 'jellyfin/'),
     ('Debrid Media Manager', 'https://debridmediamanager.com/'),

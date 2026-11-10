@@ -19,5 +19,12 @@
     "reason": "Public Jellyfin guide rendered.",
     "expectHeading": "^Your debrid library",
     "expectPath": "/jellyfin/(index\\.html)?"
+  },
+  "/download.html": {
+    "status": "verified",
+    "state": "static-guide",
+    "reason": "Sponsor download page rendered.",
+    "expectHeading": "^Download zurg",
+    "expectPath": "/download(\\.html)?"
   }
 }
