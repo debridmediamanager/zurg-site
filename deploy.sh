@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Deploy the zurg site. Two targets, both shipping the contents of public/.
+# Deploy the zurg site. Two targets, both shipping public/ plus its translations (built into dist/).
+# A push to main already does the Pages deploy (.github/workflows/publish.yml); this is for doing it by hand.
 #
 #   ./deploy.sh pages   -> Cloudflare Pages
 #   ./deploy.sh host    -> any box you can reach over ssh
@@ -20,13 +21,15 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 [ -f deploy.env ] && . ./deploy.env
+# Pages under /<lang>/ from the translations in i18n/cache; text not translated yet stays English.
+python3 i18n/translate.py html --src public --out dist --host zurg.debridmediamanager.com || [ $? -eq 3 ]
 
 case "${1:-}" in
   host)
     : "${ZURGSITE_HOST:?set ZURGSITE_HOST (user@box), in deploy.env or the environment}"
     remote_path="${ZURGSITE_PATH:-~/zurgsite}"
     # -r so subdirectories under public/ ship too, not just the top-level files.
-    scp -qr public/. "$ZURGSITE_HOST:$remote_path/"
+    scp -qr dist/. "$ZURGSITE_HOST:$remote_path/"
     if [ -n "${ZURGSITE_SERVICE:-}" ]; then
       ssh "$ZURGSITE_HOST" "systemctl --user restart ${ZURGSITE_SERVICE}"
     fi
@@ -38,7 +41,7 @@ case "${1:-}" in
     ;;
   pages)
     # wrangler 4.151 turns `pages` commands into a Workers deploy; 4.40.0 still deploys Pages.
-    npx --yes wrangler@4.40.0 pages deploy "$PWD/public" \
+    npx --yes wrangler@4.40.0 pages deploy "$PWD/dist" \
       --project-name="${CF_PAGES_PROJECT:-zurg}" --branch=main --commit-dirty=true
     ;;
   *) echo "usage: $0 [pages|host]" >&2; exit 2 ;;
