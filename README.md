@@ -24,9 +24,8 @@ public/
   social-card.png    Open Graph / Twitter card
   shot-*.webp        dashboard screenshots
   robots.txt
-  sitemap.xml
 deploy.sh            builds dist/ and ships it to Cloudflare Pages or an ssh host
-i18n/                translate.py and the translation cache
+i18n/                translate.py (also writes dist/sitemap.xml, every page in every language) and the translation cache
 tests/               navigation checks, browser measurements, captured baselines
 ```
 
