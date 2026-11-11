@@ -12,7 +12,8 @@ fetch('https://gatekeeper.debridmediamanager.com/api/downloads')
   .catch(() => { if (el('offline')) el('offline').hidden = false; });
 document.querySelectorAll('.dl-copy button').forEach(b => b.addEventListener('click', () => {
   navigator.clipboard.writeText(b.previousElementSibling.textContent).then(() => {
-    b.textContent = 'Copied';
-    setTimeout(() => { b.textContent = 'Copy'; }, 2000);
+    const label = b.dataset.label ??= b.textContent; // the page's own word for Copy, in whatever language it is
+    b.textContent = '✓';
+    setTimeout(() => { b.textContent = label; }, 2000);
   });
 }));
