@@ -242,6 +242,7 @@
 "96ab887d058e63779fb5": "\n        <a class=\"btn btn-primary\" href=\"https://debridmediamanager.com/jellyfin\">\n          احصل على رابط المستودع\n          <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14\"/><path d=\"m13 6 6 6-6 6\"/></svg>\n        </a>\n        <a class=\"btn btn-ghost\" href=\"https://gatekeeper.debridmediamanager.com/\">ادعم للحصول على الوصول</a>\n      ",
 "97c76c2431d24d8baaf7": "فتح ملف",
 "991d75ce5094745a485e": "أعاد zurg بناء الجزء المفقود من ملفات التكافؤ بينما كان لا يزال يقدم عمليات القراءة.",
+"99fd638fc02c0ef19c11": "ما عندك حساب debrid ولا Usenet، بس addons زي YouTube وSpotify؟ <a href=\"https://github.com/debridmediamanager/rex-android\">rex for Android</a> مجاني ومايحتاجش sponsorship.",
 "9a419f199572ba65eb46": "كل حسابات الـ debrid وUsenet<br><span style=\"color:var(--accent)\">في مجلد واحد.</span>",
 "9a700b25e67ae1a7f67d": "أبقِ جهاز Android المضيف قيد التشغيل ومتصلًا. استخدم شبكة موثوقة لأن HTTP لا يشفّر التشغيل أو بيانات اعتماد WebDAV. المشاركة المحلية متوقفة افتراضيًا.",
 "9a8f2fd5c5ef82b52a95": "إصدارات RAR و7z تعمل دون فك ضغط. أسماء الملفات المشوّهة تستعيد أسماءها الحقيقية. الأجزاء المفقودة تُعاد بناؤها أثناء مشاهدتك.",

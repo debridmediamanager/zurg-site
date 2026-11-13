@@ -176,6 +176,7 @@
 "6ccf704be8863a313879": "1,328 s",
 "6cee6d4e79e53c603296": "Em Settings, ative Expose on local network. O zurg cria credenciais e mostra o endereço WebDAV do seu dispositivo. Adicione esse endereço e essas credenciais ao player do seu outro dispositivo.",
 "6d6c268f82d1a013bbb9": "Eles resolvem o mesmo problema para configurações diferentes. Nada impede você de usar os dois, e muita gente usa.",
+"6e9200f11ef32d396cfe": "Sem conta de debrid nem Usenet, só addons como YouTube e Spotify? <a href=\"https://github.com/debridmediamanager/rex-android\">rex para Android</a> é gratuito e não precisa de patrocínio.",
 "6ea395bd0b54c1c03955": "\n        <span class=\"dot\" style=\"background:#e1547a;width:9px;height:9px\"></span>\n        <span class=\"dot\" style=\"background:#ffad1f;width:9px;height:9px\"></span>\n        <span class=\"dot\" style=\"background:#17bf63;width:9px;height:9px\"></span>\n        <span class=\"mono\" style=\"font-size:11.5px;color:var(--faint);margin-left:8px\">/mnt/zurg</span>\n        <span class=\"mono\" style=\"font-size:11px;color:var(--green);margin-left:auto\">mounted</span>\n      ",
 "6ef5a0993f44a5d7d3b7": "<span class=\"br\">└──</span><span class=\"nm\" style=\"color:var(--amber)\">__nzb__/</span><span style=\"color:var(--soft)\">270</span>",
 "6f60b95cd207ad113f0a": "A mesma biblioteca de uma conta AllDebrid. Uma ressincronização pergunta sobre uns vinte lançamentos por vez, então manter uma conta grande atualizada custa muito pouco.",
