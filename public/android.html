@@ -36,6 +36,10 @@
 <p class="eyebrow">Android · Google TV · Fire TV</p>
 <h1>A Plex server.<br>On your phone.</h1>
 <p class="intro">zurg+rex means running a Plex server on your phone. zurg brings in your providers and rex serves them to every Plex app at home. It runs on your TV too and any player can open your files.</p>
+<figure class="shot-fig" style="margin-top:28px">
+<video class="shot" controls preload="none" playsinline poster="android-promo.webp" width="1280" height="720" aria-label="A 38 second video of zurg+rex starting on a phone and the Plex app playing from it"><source src="android-promo.mp4" type="video/mp4"></video>
+<figcaption class="shot-cap"><b>38 seconds from Start to play.</b> Recorded on a real phone with open movies in the library.</figcaption>
+</figure>
 
 <section aria-labelledby="install"><h2 id="install">Download zurg+rex</h2>
 <p>Sign in to GitHub with your sponsor account. Then pick your device. Every link points at the newest nightly. The same app has both the phone and TV interfaces. Android 8.0 or newer is required.</p>
@@ -71,7 +75,17 @@
 <section aria-labelledby="plex"><h2 id="plex">Watch in the Plex apps</h2>
 <p>This is your Plex server running on your phone. Once your library runs Status shows rex for the Plex apps. Choose Sign in to Plex and approve the sign-in. On a TV enter the code at plex.tv/link.</p>
 <p>Your library then shows up under this device’s name in the official Plex apps and in Plezy. That works on this device and on the others in your home. rex converts what a player cannot play with the device’s hardware encoder.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:18px;margin:22px 0">
+<figure class="shot-fig"><img class="shot" src="android-status.webp" width="720" height="1433" loading="lazy" alt="Status in zurg+rex with the library ready and rex signed in to Plex"><figcaption class="shot-cap"><b>Signed in once.</b> Status says when rex is ready for the Plex app.</figcaption></figure>
+<figure class="shot-fig"><img class="shot" src="android-plex.webp" width="720" height="1600" loading="lazy" alt="Big Buck Bunny on its page in the Plex app served from the same phone"><figcaption class="shot-cap"><b>In the official Plex app.</b> Posters and summaries and a Watch button.</figcaption></figure>
+<figure class="shot-fig"><img class="shot" src="android-plezy.webp" width="720" height="1600" loading="lazy" alt="The same four open movies in the Plezy app"><figcaption class="shot-cap"><b>And in any other Plex app.</b> The same library and the same watch progress.</figcaption></figure>
+</div>
+<p>Enter your DMM API key in Settings under Library. zurg then asks DMM what each file is and more titles get their name and poster.</p>
 <p class="note">Turn rex off in Settings under Connection. zurg then stops feeding it.</p></section>
+
+<section aria-labelledby="addons"><h2 id="addons">Add more with addons</h2>
+<p>Addons bring more to watch into rex beside your library. Open Addons. The Internet Archive addon comes installed and adds public domain films. Add a repository by its link to install others.</p>
+<p>Each addon says which websites it can reach and an update that reaches new ones asks first. Install addons only from people you trust.</p></section>
 
 <section aria-labelledby="lan"><h2 id="lan">Watch elsewhere at home</h2>
 <p>In Settings turn on Expose on local network. zurg creates credentials and shows your device’s WebDAV address. Add that address and those credentials to the player on your other device.</p>
@@ -82,6 +96,7 @@
 <p>Allow background operation during setup. Some phone manufacturers need extra battery settings. See the <a href="https://dontkillmyapp.com/">device background guide</a> if playback stops with the screen off.</p>
 <p>Settings includes a YAML editor and a local Web dashboard for advanced features. Logs can be filtered and shared. Backups contain credentials and should be stored privately. Stop the server before restoring.</p>
 <p>Updates checks the sponsor repository for the app and the engine. They update separately. If a new nightly misbehaves on your device install the engine version that worked for you. Stop your library on Status before changing the engine.</p>
+<p>The <a href="https://notes.debridmediamanager.com/zurg/guides/android/">full guide</a> has every step with what you should see and what to do when something goes wrong.</p>
 <p>Stuck? Ask in the zurg-support forum on <a href="https://discord.com/invite/7u4YjMThXP">Discord</a>.</p></section>
 </main>
 <footer class="guide-footer"><p>Your providers. Your players. Your library.</p>
