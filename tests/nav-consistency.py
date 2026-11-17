@@ -43,6 +43,7 @@ FOOTER_LINKS = [
     ('Android',       SITE + 'android.html'),
     ('Jellyfin',      SITE + 'jellyfin/'),
     ('Debrid Media Manager', 'https://debridmediamanager.com/'),
+    ('DMM Mobile',    'https://debridmediamanager.com/mobile'),
     ('rex',           'https://rex.debridmediamanager.com/'),
     ('Docs',          'https://notes.debridmediamanager.com/'),
     ('Sponsor',       'https://gatekeeper.debridmediamanager.com/'),
